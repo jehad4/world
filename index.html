@@ -29,6 +29,77 @@
       background: linear-gradient(135deg, #ff2e00, #ff6600);
     }
 
+    /* Sliding Navigation Bar */
+    .sliding-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .sliding-nav.show {
+      transform: translateY(0);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ffcc00;
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
     .banner {
       text-align: center;
       font-size: 26px;
@@ -36,6 +107,7 @@
       padding: 15px;
       color: #fff;
       text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+      margin-top: 60px;
     }
 
     .header {
@@ -83,6 +155,7 @@
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s;
     }
 
     .login-btn {
@@ -90,9 +163,20 @@
       color: white;
     }
 
+    .login-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
     .profile-btn {
       background-color: #ffcc00;
       color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-btn:hover {
+      background-color: #ffd633;
     }
 
     .container {
@@ -102,11 +186,28 @@
       background-color: rgba(0, 0, 0, 0.3);
       border-radius: 15px;
       backdrop-filter: blur(6px);
+      margin-top: 20px;
     }
 
     h2 {
       text-align: center;
       margin: 20px 0;
+      font-size: 28px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff2e00, #ffcc00);
+      border-radius: 3px;
     }
 
     .card-grid {
@@ -121,53 +222,70 @@
       text-align: center;
       padding: 15px;
       transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .card:hover {
       transform: translateY(-5px);
       background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     .card img {
       width: 60px;
       height: 60px;
       object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    .card div {
+      margin-top: 10px;
+      font-weight: 500;
     }
 
     .footer-logo {
       text-align: center;
       margin-top: 50px;
+      padding-bottom: 30px;
     }
 
     .footer-logo img {
       width: 100px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 20px;
+        gap: 15px;
+      }
 
-    .modal-content {
-      background: #fff3;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .banner {
+        margin-top: 80px;
+      }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script type="module">
     // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
@@ -186,19 +304,49 @@
     window.googleLogin = function () {
       signInWithPopup(auth, provider)
         .then(result => {
-          alert("Logged in as " + result.user.displayName);
-          document.getElementById("loginBtn").style.display = "none";
-          document.getElementById("profileBtn").style.display = "inline-block";
+          window.location.href = "profile.html";
         })
         .catch(error => {
           alert("Login Failed: " + error.message);
         });
     };
+
+    // Handle auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("profileBtn").style.display = "flex";
+      } else {
+        document.getElementById("loginBtn").style.display = "flex";
+        document.getElementById("profileBtn").style.display = "none";
+      }
+    });
   </script>
 </head>
 <body>
   <canvas id="backgroundCanvas"></canvas>
-  <div class="banner">🔥 Welcome to Gix Game Shop 🔥</div>
+  
+  <!-- Sliding Navigation Bar -->
+  <nav class="sliding-nav" id="slidingNav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-gamepad"></i>
+        <span>GixGame</span>
+      </div>
+      <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-gamepad"></i> Games</a>
+        <a href="#"><i class="fas fa-tv"></i> Subscriptions</a>
+        <a href="#"><i class="fas fa-gift"></i> Promotions</a>
+        <a href="#"><i class="fas fa-headset"></i> Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="banner"> Welcome to Gix Game Shop </div>
 
   <div class="header">
     <div class="logo">
@@ -212,7 +360,7 @@
       <button class="auth-btn login-btn" id="loginBtn" onclick="googleLogin()">
         <i class="fab fa-google"></i> Sign in with Google
       </button>
-      <button class="auth-btn profile-btn" id="profileBtn" style="display: none;">
+      <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
         <i class="fas fa-user"></i> Profile
       </button>
     </div>
@@ -242,6 +390,23 @@
   </div>
 
   <script>
+    // Sliding Navigation Logic
+    const slidingNav = document.getElementById('slidingNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // Show nav after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        slidingNav.classList.add('show');
+      }, 500);
+    });
+
+    // Toggle mobile menu
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
     // Live Background using Canvas
     const canvas = document.getElementById('backgroundCanvas');
     const ctx = canvas.getContext('2d');
