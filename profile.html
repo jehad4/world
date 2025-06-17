@@ -16,7 +16,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       color: #fff;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      background: linear-gradient(135deg, #ff2e00, #ff6600);
     }
 
     /* Background animation */
@@ -35,12 +35,11 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(10, 10, 20, 0.9);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(10px);
       z-index: 1000;
       transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     }
 
     .sliding-nav.show {
@@ -62,12 +61,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .nav-logo i {
-      color: #00ffcc;
     }
 
     .nav-links {
@@ -76,18 +69,11 @@
     }
 
     .nav-links a {
-      color: rgba(255, 255, 255, 0.8);
+      color: white;
       text-decoration: none;
       font-weight: 500;
       position: relative;
       transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-links a:hover {
-      color: #00ffcc;
     }
 
     .nav-links a::after {
@@ -97,7 +83,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: #00ffcc;
+      background: #ffcc00;
       transition: width 0.3s;
     }
 
@@ -112,12 +98,6 @@
       font-size: 24px;
       cursor: pointer;
       display: none;
-      transition: transform 0.3s;
-    }
-
-    .nav-toggle:hover {
-      transform: rotate(90deg);
-      color: #00ffcc;
     }
 
     .profile-container {
@@ -133,9 +113,9 @@
     .profile-card {
       width: 100%;
       max-width: 500px;
-      background: rgba(20, 20, 40, 0.6);
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 20px;
-      padding: 40px;
+      padding: 30px;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -145,12 +125,6 @@
       transform: translateY(50px);
       opacity: 0;
       animation: fadeInUp 1s forwards 0.3s;
-      transition: all 0.5s;
-    }
-
-    .profile-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
 
     @keyframes fadeInUp {
@@ -169,73 +143,62 @@
       height: 200%;
       background: linear-gradient(
         to bottom right,
-        rgba(0, 255, 204, 0.1),
-        rgba(0, 255, 204, 0)
+        rgba(255, 204, 0, 0.1),
+        rgba(255, 204, 0, 0)
       );
       transform: rotate(30deg);
       z-index: -1;
     }
 
     .profile-pic {
-      width: 140px;
-      height: 140px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #00ffcc;
-      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
-      margin-bottom: 25px;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 4px solid #ffcc00;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      transition: all 0.5s;
     }
 
     .profile-pic:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 15px 40px rgba(0, 255, 204, 0.4);
+      transform: scale(1.05) rotate(5deg);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
     }
 
     .profile-name {
-      font-size: 32px;
+      font-size: 28px;
       margin-bottom: 10px;
-      background: linear-gradient(90deg, #00ffcc, #0088ff);
+      background: linear-gradient(90deg, #ffcc00, #ff6600);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       display: inline-block;
-      font-weight: 700;
-      letter-spacing: 0.5px;
     }
 
     .profile-email {
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 30px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 20px;
       font-size: 16px;
-      font-weight: 300;
     }
 
     .profile-stats {
       display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 40px 0;
+      justify-content: space-around;
+      margin: 30px 0;
       flex-wrap: wrap;
+      gap: 15px;
     }
 
     .stat-item {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px 25px;
-      border-radius: 15px;
-      min-width: 140px;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      min-width: 120px;
+      transition: all 0.3s;
       transform: scale(0.95);
       opacity: 0;
       animation: popIn 0.5s forwards;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .stat-item:hover {
-      background: rgba(0, 255, 204, 0.1);
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(0, 255, 204, 0.2);
-      border-color: rgba(0, 255, 204, 0.3);
     }
 
     @keyframes popIn {
@@ -247,48 +210,48 @@
 
     .stat-item:nth-child(1) { animation-delay: 0.5s; }
     .stat-item:nth-child(2) { animation-delay: 0.7s; }
+    .stat-item:nth-child(3) { animation-delay: 0.9s; }
+
+    .stat-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px) scale(1);
+    }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
-      color: #00ffcc;
+      color: #ffcc00;
       margin-bottom: 5px;
     }
 
     .stat-label {
       font-size: 14px;
       color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-weight: 500;
     }
 
     .logout-btn {
-      background: rgba(255, 0, 0, 0.15);
+      background: rgba(255, 0, 0, 0.2);
       color: white;
-      border: 1px solid rgba(255, 0, 0, 0.3);
-      padding: 14px 30px;
-      border-radius: 10px;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
       transition: all 0.3s;
-      margin-top: 30px;
-      display: inline-flex;
+      margin-top: 20px;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+      gap: 8px;
     }
 
     .logout-btn:hover {
-      background: rgba(255, 0, 0, 0.25);
+      background: rgba(255, 0, 0, 0.3);
       transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
     }
 
     /* Animated Text */
     .animated-text {
-      background: linear-gradient(90deg, #00ffcc, #0088ff, #00ffcc);
+      background: linear-gradient(90deg, #ffcc00, #ff6600, #ffcc00);
       background-size: 200% auto;
       color: transparent;
       -webkit-background-clip: text;
@@ -302,21 +265,9 @@
       }
     }
 
-    /* Floating elements */
-    .floating {
-      animation: floating 6s ease-in-out infinite;
-    }
-
-    @keyframes floating {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-
     @media (max-width: 768px) {
       .profile-container {
         margin-top: 80px;
-        padding: 15px;
       }
 
       .nav-links {
@@ -326,10 +277,9 @@
         top: 70px;
         left: 0;
         width: 100%;
-        background: rgba(10, 10, 20, 0.95);
+        background: rgba(0, 0, 0, 0.9);
         padding: 20px;
         gap: 15px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
       }
 
       .nav-links.show {
@@ -341,18 +291,12 @@
       }
 
       .profile-card {
-        padding: 30px 20px;
+        padding: 20px;
       }
 
       .profile-stats {
         flex-direction: column;
         align-items: center;
-        gap: 20px;
-      }
-      
-      .stat-item {
-        width: 100%;
-        max-width: 200px;
       }
     }
   </style>
@@ -407,10 +351,10 @@
   <!-- Sliding Navigation Bar -->
   <nav class="sliding-nav" id="slidingNav">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo">
+      <div class="nav-logo">
         <i class="fas fa-gamepad"></i>
         <span>GixGameShop</span>
-      </a>
+      </div>
       <button class="nav-toggle" id="navToggle">
         <i class="fas fa-bars"></i>
       </button>
@@ -425,7 +369,7 @@
   </nav>
 
   <div class="profile-container">
-    <div class="profile-card floating">
+    <div class="profile-card">
       <img id="profilePic" class="profile-pic" src="" alt="Profile Picture">
       <h1 class="profile-name animated-text" id="profileName">Loading...</h1>
       <p class="profile-email" id="profileEmail">user@example.com</p>
@@ -434,6 +378,10 @@
         <div class="stat-item">
           <div class="stat-value">12</div>
           <div class="stat-label">Transactions</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">৳5,200</div>
+          <div class="stat-label">Total Spent</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">3</div>
@@ -469,7 +417,6 @@
     const canvas = document.getElementById('backgroundCanvas');
     const ctx = canvas.getContext('2d');
     let w, h, particles = [];
-    let particleCount = window.innerWidth < 768 ? 80 : 150;
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -478,68 +425,37 @@
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
-      
-      // Draw gradient background
-      const gradient = ctx.createLinearGradient(0, 0, w, h);
-      gradient.addColorStop(0, '#1a1a2e');
-      gradient.addColorStop(1, '#16213e');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, w, h);
-      
-      // Draw particles
       particles.forEach((p, i) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        
-        // Create gradient for each particle
-        const particleGradient = ctx.createRadialGradient(
-          p.x, p.y, 0, 
-          p.x, p.y, p.size
-        );
-        particleGradient.addColorStop(0, `rgba(0, 255, 204, ${p.alpha})`);
-        particleGradient.addColorStop(1, `rgba(0, 255, 204, 0)`);
-        
-        ctx.fillStyle = particleGradient;
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
         ctx.fill();
-        
-        // Update particle position
         p.y -= p.speed;
-        p.x += Math.sin(p.y * 0.01) * 0.5;
-        
-        // Reset particle if it goes off screen
-        if (p.y < -10 || p.x < -10 || p.x > w + 10) {
-          particles[i] = createParticle();
-        }
+        if (p.y < 0) p.y = h + Math.random() * 100;
       });
-      
       requestAnimationFrame(draw);
-    }
-
-    function createParticle() {
-      return {
-        x: Math.random() * w,
-        y: h + Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        alpha: Math.random() * 0.6 + 0.2,
-        speed: Math.random() * 0.8 + 0.3
-      };
     }
 
     function initParticles(count) {
       particles = [];
       for (let i = 0; i < count; i++) {
-        particles.push(createParticle());
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 2 + 1,
+          alpha: Math.random(),
+          speed: Math.random() * 0.5 + 0.2
+        });
       }
     }
 
     window.addEventListener('resize', () => {
       resize();
-      particleCount = window.innerWidth < 768 ? 80 : 150;
-      initParticles(particleCount);
+      initParticles(150);
     });
 
     resize();
-    initParticles(particleCount);
+    initParticles(150);
     draw();
   </script>
 </body>
