@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support - Gix Game Shop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    /* Background animation */
+    #backgroundCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(135deg, #ff2e00, #ff6600);
+    }
+
+    /* Sliding Navigation Bar */
+    .sliding-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .sliding-nav.show {
+      transform: translateY(0);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ffcc00;
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Support Content Styles */
+    .support-container {
+      max-width: 1200px;
+      margin: 100px auto 50px;
+      padding: 20px;
+    }
+
+    .support-header {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 40px;
+      color: #fff;
+      text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .contact-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #ffcc00;
+    }
+
+    .contact-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .contact-info {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .contact-btn {
+      display: inline-block;
+      padding: 12px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .contact-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .footer-logo {
+      text-align: center;
+      margin-top: 50px;
+      padding-bottom: 30px;
+    }
+
+    .footer-logo img {
+      width: 100px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 20px;
+        gap: 15px;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .support-header {
+        font-size: 28px;
+        margin-bottom: 30px;
+      }
+
+      .contact-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        padding: 20px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
+      authDomain: "gixgame.firebaseapp.com",
+      databaseURL: "https://gixgame-default-rtdb.firebaseio.com",
+      projectId: "gixgame",
+      storageBucket: "gixgame.firebasestorage.app",
+      messagingSenderId: "808321553860",
+      appId: "1:808321553860:web:d95a7bcab2b3af49308091"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Handle auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("profileBtn").style.display = "flex";
+      } else {
+        document.getElementById("loginBtn").style.display = "flex";
+        document.getElementById("profileBtn").style.display = "none";
+      }
+    });
+  </script>
+</head>
+<body>
+  <canvas id="backgroundCanvas"></canvas>
+  
+  <!-- Sliding Navigation Bar -->
+  <nav class="sliding-nav" id="slidingNav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-gamepad"></i>
+        <span>GixGameShop</span>
+      </div>
+      <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-gamepad"></i> Games</a>
+        <a href="#"><i class="fas fa-tv"></i> Subscriptions</a>
+        <a href="#"><i class="fas fa-gift"></i> Promotions</a>
+        <a href="support.html"><i class="fas fa-headset"></i> Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="support-container">
+    <h1 class="support-header">Contact Our Support Team</h1>
+    
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <h2 class="contact-title">Email Support</h2>
+        <p class="contact-info">gixroz7@gmail.com</p>
+        <a href="mailto:gixroz7@gmail.com" class="contact-btn">
+          <i class="fas fa-paper-plane"></i> Send Email
+        </a>
+      </div>
+      
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <h2 class="contact-title">WhatsApp</h2>
+        <p class="contact-info">+880 1999-515003</p>
+        <a href="https://wa.me/8801999515003" target="_blank" class="contact-btn">
+          <i class="fab fa-whatsapp"></i> Message Us
+        </a>
+      </div>
+      
+      <div class="contact-card">
+        <div class="contact-icon">
+          <i class="fab fa-facebook"></i>
+        </div>
+        <h2 class="contact-title">Facebook</h2>
+        <p class="contact-info">Gix Game Shop</p>
+        <a href="https://www.facebook.com/profile.php?id=61558022944496" target="_blank" class="contact-btn">
+          <i class="fab fa-facebook"></i> Visit Page
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-logo">
+    <img src="logo.png" alt="Gix Game Shop Logo">
+  </div>
+
+  <script>
+    // Sliding Navigation Logic
+    const slidingNav = document.getElementById('slidingNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // Show nav after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        slidingNav.classList.add('show');
+      }, 500);
+    });
+
+    // Toggle mobile menu
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    // Live Background using Canvas
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        ctx.fill();
+        p.y -= p.speed;
+        if (p.y < 0) p.y = h + Math.random() * 100;
+      });
+      requestAnimationFrame(draw);
+    }
+
+    function initParticles(count) {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 2 + 1,
+          alpha: Math.random(),
+          speed: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      initParticles(150);
+    });
+
+    resize();
+    initParticles(150);
+    draw();
+  </script>
+</body>
+</html>
