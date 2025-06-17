@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Top-Up Home</title>
+  <style>
+    body {
+      background: #eef4ff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 30px;
+      color: #23395d;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      width: 130px;
+      height: 160px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      margin-top: 10px;
+    }
+    .card span {
+      font-size: 13px;
+      margin: 10px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔥 Select a Game to Top-Up</h2>
+  <div class="card-container">
+    <div class="card"><img src="img/bloodstrike.png" alt="Blood Strike"><span>Blood Strike</span></div>
+    <div class="card"><img src="img/racingmaster.png" alt="Racing Master"><span>Racing Master</span></div>
+    <div class="card"><img src="img/genshin.png" alt="Genshin Impact"><span>Genshin Impact</span></div>
+    <div class="card"><img src="img/deltaforce.png" alt="Delta Force"><span>Delta Force</span></div>
+    <div class="card"><img src="img/wuthering.png" alt="Wuthering Waves"><span>Wuthering Waves</span></div>
+    <div class="card"><img src="img/mlbb.png" alt="Mobile Legends"><span>Mobile Legends</span></div>
+  </div>
+
+  <h2>🎬 Subscription Services</h2>
+  <div class="card-container">
+    <div class="card"><img src="img/netflix.png" alt="Netflix"><span>Netflix</span></div>
+    <div class="card"><img src="img/prime.png" alt="Amazon Prime"><span>Amazon Prime</span></div>
+    <div class="card"><img src="img/crunchyroll.png" alt="Crunchyroll"><span>Crunchyroll</span></div>
+  </div>
+
+  <!-- Firebase Config (you will link this later) -->
+  <script src="firebase.js"></script>
+
+</body>
+</html>
