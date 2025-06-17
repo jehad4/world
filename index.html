@@ -234,13 +234,13 @@
       margin-top: 30px;
     }
 
-    /* Liquid Button Styles */
+    /* Improved Liquid Button Styles */
     .liquid-button {
       background: none;
       padding: 20px;
-      border-radius: 50px;
+      border-radius: 15px;
       position: relative;
-      margin: 10px;
+      margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -249,19 +249,31 @@
       color: white;
       text-decoration: none;
       z-index: 2;
-      font-weight: 300;
+      font-weight: 500;
       font-size: 16px;
-      letter-spacing: 1px;
-      min-height: 120px;
+      min-height: 180px;
+      min-width: 180px;
       cursor: pointer;
       transition: all 0.3s ease;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    }
+
+    .liquid-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
 
     .liquid-button img {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .liquid-button:hover img {
+      transform: scale(1.1);
     }
 
     .liquid-button canvas {
@@ -321,9 +333,16 @@
       }
 
       .liquid-button {
-        min-height: 100px;
+        min-height: 140px;
+        min-width: 140px;
         font-size: 14px;
         padding: 15px;
+      }
+
+      .liquid-button img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
       }
     }
   </style>
@@ -377,27 +396,27 @@
     <div class="section-header">🎮 Select a Game</div>
     <div class="card-grid">
       <a class="liquid-button" href="#" data-text="Blood Strike">
-        <img src="img/bloodstrike.png" alt="Blood Strike">
+        <img src="https://via.placeholder.com/80x80/ff0000/ffffff?text=BS" alt="Blood Strike">
         Blood Strike
       </a>
       <a class="liquid-button" href="#" data-text="Racing Master">
-        <img src="img/racingmaster.png" alt="Racing Master">
+        <img src="https://via.placeholder.com/80x80/0000ff/ffffff?text=RM" alt="Racing Master">
         Racing Master
       </a>
       <a class="liquid-button" href="#" data-text="Genshin Impact">
-        <img src="img/genshin.png" alt="Genshin">
+        <img src="https://via.placeholder.com/80x80/00ff00/ffffff?text=GI" alt="Genshin">
         Genshin Impact
       </a>
       <a class="liquid-button" href="#" data-text="Delta Force">
-        <img src="img/deltaforce.png" alt="Delta Force">
+        <img src="https://via.placeholder.com/80x80/ffff00/000000?text=DF" alt="Delta Force">
         Delta Force
       </a>
       <a class="liquid-button" href="#" data-text="Honkai Star Rail">
-        <img src="img/honkai.png" alt="Honkai">
+        <img src="https://via.placeholder.com/80x80/ff00ff/ffffff?text=HSR" alt="Honkai">
         Honkai Star Rail
       </a>
       <a class="liquid-button" href="#" data-text="Mobile Legends">
-        <img src="img/mlbb.png" alt="MLBB">
+        <img src="https://via.placeholder.com/80x80/00ffff/000000?text=ML" alt="MLBB">
         Mobile Legends
       </a>
     </div>
@@ -405,15 +424,15 @@
     <div class="section-header">📺 Subscriptions</div>
     <div class="card-grid">
       <a class="liquid-button" href="#" data-text="Netflix">
-        <img src="img/netflix.png" alt="Netflix">
+        <img src="https://via.placeholder.com/80x80/e50914/ffffff?text=NFLX" alt="Netflix">
         Netflix
       </a>
       <a class="liquid-button" href="#" data-text="Amazon Prime">
-        <img src="img/prime.png" alt="Prime">
+        <img src="https://via.placeholder.com/80x80/00a8e1/ffffff?text=PRIME" alt="Prime">
         Amazon Prime
       </a>
       <a class="liquid-button" href="#" data-text="Crunchyroll">
-        <img src="img/crunchyroll.png" alt="Crunchyroll">
+        <img src="https://via.placeholder.com/80x80/f47521/ffffff?text=CR" alt="Crunchyroll">
         Crunchyroll
       </a>
     </div>
