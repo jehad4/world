@@ -264,12 +264,58 @@
     .footer-logo {
       text-align: center;
       margin-top: 50px;
-      padding-bottom: 30px;
+      padding-bottom: 10px;
     }
 
     .footer-logo img {
       width: 100px;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    /* Status Box */
+    .status-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(6px);
+      border-radius: 10px;
+      padding: 8px 15px;
+      margin: 0 auto 30px;
+      width: fit-content;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #00ff00;
+      animation: blink 1.5s infinite;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .status-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    /* Added copyright style */
+    .copyright {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 30px;
     }
 
     @media (max-width: 768px) {
@@ -374,8 +420,13 @@
 
   <div class="header">
      <div class="footer-logo">
-    <img src="logo.png" alt="Logo">
-  </div>
+       <img src="logo.png" alt="Logo">
+       <!-- Added status box -->
+       <div class="status-box">
+         <div class="status-dot"></div>
+         <span class="status-text">Active Now</span>
+       </div>
+     </div>
     <div class="auth-buttons">
       <div class="notification-icon" title="Notifications">
         <i class="fas fa-bell"></i>
@@ -406,6 +457,11 @@
       <div class="card"><img src="img/prime.png" alt="Prime"><div>Amazon Prime</div></div>
       <div class="card"><img src="img/crunchyroll.png" alt="Crunchyroll"><div>Crunchyroll</div></div>
     </div>
+  </div>
+
+  <!-- Added copyright notice -->
+  <div class="copyright">
+    &copy; 2025 GixGameShop. All rights reserved.
   </div>
 
   <script>
