@@ -16,7 +16,6 @@
       min-height: 100vh;
       overflow-x: hidden;
       color: #fff;
-      background: #38277F;
     }
 
     /* Background animation */
@@ -229,59 +228,37 @@
 
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
     }
 
-    /* Improved Liquid Button Styles */
-    .liquid-button {
-      background: none;
-      padding: 20px;
-      border-radius: 15px;
-      position: relative;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      text-decoration: none;
-      z-index: 2;
-      font-weight: 500;
-      font-size: 16px;
-      min-height: 180px;
-      min-width: 180px;
-      cursor: pointer;
+    .card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      text-align: center;
+      padding: 15px;
       transition: all 0.3s ease;
-      aspect-ratio: 1/1;
-      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .liquid-button:hover {
+    .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .liquid-button img {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 15px;
+    .card img {
+      width: 60px;
+      height: 60px;
       object-fit: contain;
-      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
 
-    .liquid-button:hover img {
-      transform: scale(1.1);
-    }
-
-    .liquid-button canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: -1;
+    .card div {
+      margin-top: 10px;
+      font-weight: 500;
     }
 
     .footer-logo {
@@ -326,27 +303,49 @@
         font-size: 24px;
         padding: 10px 20px;
       }
-
-      .card-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 20px;
-      }
-
-      .liquid-button {
-        min-height: 140px;
-        min-width: 140px;
-        font-size: 14px;
-        padding: 15px;
-      }
-
-      .liquid-button img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
-      }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
+      authDomain: "gixgame.firebaseapp.com",
+      databaseURL: "https://gixgame-default-rtdb.firebaseio.com",
+      projectId: "gixgame",
+      storageBucket: "gixgame.firebasestorage.app",
+      messagingSenderId: "808321553860",
+      appId: "1:808321553860:web:d95a7bcab2b3af49308091"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    window.googleLogin = function () {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          window.location.href = "profile.html";
+        })
+        .catch(error => {
+          alert("Login Failed: " + error.message);
+        });
+    };
+
+    // Handle auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("profileBtn").style.display = "flex";
+      } else {
+        document.getElementById("loginBtn").style.display = "flex";
+        document.getElementById("profileBtn").style.display = "none";
+      }
+    });
+  </script>
 </head>
 <body>
   <canvas id="backgroundCanvas"></canvas>
@@ -356,7 +355,7 @@
     <div class="nav-container">
       <div class="nav-logo">
         <i class="fas fa-gamepad"></i>
-        <span>GixGameShop</span>
+        <span>GixGame</span>
       </div>
       <button class="nav-toggle" id="navToggle">
         <i class="fas fa-bars"></i>
@@ -375,18 +374,17 @@
 
   <div class="header">
     <div class="logo">
-      <div class="footer-logo">
-        <img src="img/gix-logo.png" alt="Gix Game Shop Logo">
-      </div>
+      <i class="fas fa-gamepad"></i>
+      GameTopUp
     </div>
     <div class="auth-buttons">
       <div class="notification-icon" title="Notifications">
         <i class="fas fa-bell"></i>
       </div>
-      <button class="auth-btn login-btn" id="loginBtn" onclick="alert('Login functionality')">
+      <button class="auth-btn login-btn" id="loginBtn" onclick="googleLogin()">
         <i class="fab fa-google"></i> Sign in with Google
       </button>
-      <button class="auth-btn profile-btn" id="profileBtn" onclick="alert('Profile page')">
+      <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
         <i class="fas fa-user"></i> Profile
       </button>
     </div>
@@ -395,288 +393,27 @@
   <div class="container">
     <div class="section-header">🎮 Select a Game</div>
     <div class="card-grid">
-      <a class="liquid-button" href="#" data-text="Blood Strike">
-        <img src="img/bloodstrike.png" alt="Blood Strike">
-        Blood Strike
-      </a>
-      <a class="liquid-button" href="#" data-text="Racing Master">
-        <img src="img/racingmaster.png" alt="Racing Master">
-        Racing Master
-      </a>
-      <a class="liquid-button" href="#" data-text="Genshin Impact">
-        <img src="img/genshin.png" alt="Genshin Impact">
-        Genshin Impact
-      </a>
-      <a class="liquid-button" href="#" data-text="Delta Force">
-        <img src="img/deltaforce.png" alt="Delta Force">
-        Delta Force
-      </a>
-      <a class="liquid-button" href="#" data-text="Wuthering Waves">
-        <img src="img/wuthering.png" alt="Wuthering Waves">
-        Wuthering Waves
-      </a>
-      <a class="liquid-button" href="#" data-text="Mobile Legends">
-        <img src="img/mlbb.png" alt="Mobile Legends">
-        Mobile Legends
-      </a>
+      <div class="card"><img src="img/bloodstrike.png" alt="Blood Strike"><div>Blood Strike</div></div>
+      <div class="card"><img src="img/racingmaster.png" alt="Racing Master"><div>Racing Master</div></div>
+      <div class="card"><img src="img/genshin.png" alt="Genshin"><div>Genshin Impact</div></div>
+      <div class="card"><img src="img/deltaforce.png" alt="Delta Force"><div>Delta Force</div></div>
+      <div class="card"><img src="img/honkai.png" alt="Honkai"><div>Honkai Star Rail</div></div>
+      <div class="card"><img src="img/mlbb.png" alt="MLBB"><div>Mobile Legends</div></div>
     </div>
 
     <div class="section-header">📺 Subscriptions</div>
     <div class="card-grid">
-      <a class="liquid-button" href="#" data-text="Netflix">
-        <img src="img/netflix.png" alt="Netflix">
-        Netflix
-      </a>
-      <a class="liquid-button" href="#" data-text="Amazon Prime">
-        <img src="img/prime.png" alt="Amazon Prime">
-        Amazon Prime
-      </a>
-      <a class="liquid-button" href="#" data-text="Crunchyroll">
-        <img src="img/crunchyroll.png" alt="Crunchyroll">
-        Crunchyroll
-      </a>
+      <div class="card"><img src="img/netflix.png" alt="Netflix"><div>Netflix</div></div>
+      <div class="card"><img src="img/prime.png" alt="Prime"><div>Amazon Prime</div></div>
+      <div class="card"><img src="img/crunchyroll.png" alt="Crunchyroll"><div>Crunchyroll</div></div>
     </div>
   </div>
 
+  <div class="footer-logo">
+    <img src="logo.png" alt="Logo">
+  </div>
+
   <script>
-    // Liquid Button Class
-    const LiquidButton = class LiquidButton {
-      constructor(button) {
-        const { width, height } = button.getBoundingClientRect();
-        const buttonStyles = window.getComputedStyle(button);
-        const options = button.dataset || {};
-
-        this.font = `${buttonStyles['font-size']} ${buttonStyles['font-family']}`;
-        this.tension = options.tension || 0.4;
-        this.width = width;
-        this.height = height;
-        this.margin = options.margin || 20;
-        this.padding = parseFloat(buttonStyles.paddingRight) || 20;
-        this.hoverFactor = options.hoverFactor || 0.5;
-        this.gap = options.gap || 5;
-        this.debug = options.debug || false;
-        this.forceFactor = options.forceFactor || 0.2;
-        this.color1 = options.color1 || '#FF4500';  // Orange red
-        this.color2 = options.color2 || '#FF8C00';  // Dark orange
-        this.color3 = options.color3 || '#FFA500';  // Orange
-        this.textColor = buttonStyles.color || '#FFFFFF';
-        this.layers = [{
-          points: [],
-          viscosity: 0.5,
-          mouseForce: 100,
-          forceLimit: 2,
-        }, {
-          points: [],
-          viscosity: 0.8,
-          mouseForce: 150,
-          forceLimit: 3,
-        }];
-        this.text = button.textContent;
-        this.canvas = document.createElement('canvas');
-        this.context = this.canvas.getContext('2d');
-        button.appendChild(this.canvas);
-        this.touches = [];
-        this.noise = options.noise || 0;
-        
-        button.addEventListener('mousemove', this.mousemove.bind(this));
-        button.addEventListener('mouseout', this.mouseout.bind(this));
-        
-        this.initOrigins();
-        this.animate();
-        this.restingFace();
-      }
-
-      restingFace() {
-        this.mousemove({ offsetX: Math.random() * this.width, offsetY: 1 });
-      }
-
-      mousemove(e) {
-        this.touches = [{
-          x: e.offsetX,
-          y: e.offsetY,
-          z: 0,
-          force: 1,
-        }];
-      }
-
-      mouseout(e) {
-        this.touches = [];
-        this.restingFace();
-      }
-
-      get raf() {
-        return this.__raf || (this.__raf = (
-          window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          function (callback) { setTimeout(callback, 10) }
-        ).bind(window));
-      }
-
-      distance(p1, p2) {
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-      }
-
-      update() {
-        for (let layerIndex = 0; layerIndex < this.layers.length; layerIndex++) {
-          const layer = this.layers[layerIndex];
-          const points = layer.points;
-          for (let pointIndex = 0; pointIndex < points.length; pointIndex++) {
-            const point = points[pointIndex];
-            const dx = point.ox - point.x + (Math.random() - 0.5) * this.noise;
-            const dy = point.oy - point.y + (Math.random() - 0.5) * this.noise;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            const f = d * this.forceFactor;
-            point.vx += f * ((dx / d) || 0);
-            point.vy += f * ((dy / d) || 0);
-            for (let touchIndex = 0; touchIndex < this.touches.length; touchIndex++) {
-              const touch = this.touches[touchIndex];
-              let mouseForce = layer.mouseForce;
-              if (
-                touch.x > this.margin &&
-                touch.x < this.margin + this.width &&
-                touch.y > this.margin &&
-                touch.y < this.margin + this.height
-              ) {
-                mouseForce *= -this.hoverFactor;
-              }
-              const mx = point.x - touch.x;
-              const my = point.y - touch.y;
-              const md = Math.sqrt(mx * mx + my * my);
-              const mf = Math.max(-layer.forceLimit, Math.min(layer.forceLimit, (mouseForce * touch.force) / md));
-              point.vx += mf * ((mx / md) || 0);
-              point.vy += mf * ((my / md) || 0);
-            }
-            point.vx *= layer.viscosity;
-            point.vy *= layer.viscosity;
-            point.x += point.vx;
-            point.y += point.vy;
-          }
-          for (let pointIndex = 0; pointIndex < points.length; pointIndex++) {
-            const prev = points[(pointIndex + points.length - 1) % points.length];
-            const point = points[pointIndex];
-            const next = points[(pointIndex + points.length + 1) % points.length];
-            const dPrev = this.distance(point, prev);
-            const dNext = this.distance(point, next);
-
-            const line = {
-              x: next.x - prev.x,
-              y: next.y - prev.y,
-            };
-            const dLine = Math.sqrt(line.x * line.x + line.y * line.y);
-
-            point.cPrev = {
-              x: point.x - (line.x / dLine) * dPrev * this.tension,
-              y: point.y - (line.y / dLine) * dPrev * this.tension,
-            };
-            point.cNext = {
-              x: point.x + (line.x / dLine) * dNext * this.tension,
-              y: point.y + (line.y / dLine) * dNext * this.tension,
-            };
-          }
-        }
-      }
-
-      animate() {
-        this.raf(() => {
-          this.update();
-          this.draw();
-          this.animate();
-        });
-      }
-
-      draw() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        for (let layerIndex = 0; layerIndex < this.layers.length; layerIndex++) {
-          const layer = this.layers[layerIndex];
-          if (layerIndex === 1) {
-            if (this.touches.length > 0) {
-              const gx = this.touches[0].x;
-              const gy = this.touches[0].y;
-              layer.color = this.context.createRadialGradient(gx, gy, this.height * 2, gx, gy, 0);
-              layer.color.addColorStop(0, this.color2);
-              layer.color.addColorStop(1, this.color3);
-            } else {
-              layer.color = this.color2;
-            }
-          } else {
-            layer.color = this.color1;
-          }
-          const points = layer.points;
-          this.context.fillStyle = layer.color;
-
-          this.context.beginPath();
-          this.context.moveTo(points[0].x, points[0].y);
-          for (let pointIndex = 1; pointIndex < points.length; pointIndex += 1) {
-            this.context.bezierCurveTo(
-              points[(pointIndex + 0) % points.length].cNext.x,
-              points[(pointIndex + 0) % points.length].cNext.y,
-              points[(pointIndex + 1) % points.length].cPrev.x,
-              points[(pointIndex + 1) % points.length].cPrev.y,
-              points[(pointIndex + 1) % points.length].x,
-              points[(pointIndex + 1) % points.length].y
-            );
-          }
-          this.context.fill();
-        }
-      }
-
-      createPoint(x, y) {
-        return {
-          x: x,
-          y: y,
-          ox: x,
-          oy: y,
-          vx: 0,
-          vy: 0,
-        };
-      }
-
-      initOrigins() {
-        this.canvas.width = this.width + this.margin * 2;
-        this.canvas.height = this.height + this.margin * 2;
-        for (let layerIndex = 0; layerIndex < this.layers.length; layerIndex++) {
-          const layer = this.layers[layerIndex];
-          const points = [];
-          for (let x = ~~(this.height / 2); x < this.width - ~~(this.height / 2); x += this.gap) {
-            points.push(this.createPoint(
-              x + this.margin,
-              this.margin
-            ));
-          }
-          for (let alpha = ~~(this.height * 1.25); alpha >= 0; alpha -= this.gap) {
-            const angle = (Math.PI / ~~(this.height * 1.25)) * alpha;
-            points.push(this.createPoint(
-              Math.sin(angle) * this.height / 2 + this.margin + this.width - this.height / 2,
-              Math.cos(angle) * this.height / 2 + this.margin + this.height / 2
-            ));
-          }
-          for (let x = this.width - ~~(this.height / 2) - 1; x >= ~~(this.height / 2); x -= this.gap) {
-            points.push(this.createPoint(
-              x + this.margin,
-              this.margin + this.height
-            ));
-          }
-          for (let alpha = 0; alpha <= ~~(this.height * 1.25); alpha += this.gap) {
-            const angle = (Math.PI / ~~(this.height * 1.25)) * alpha;
-            points.push(this.createPoint(
-              (this.height - Math.sin(angle) * this.height / 2) + this.margin - this.height / 2,
-              Math.cos(angle) * this.height / 2 + this.margin + this.height / 2
-            ));
-          }
-          layer.points = points;
-        }
-      }
-    }
-
-    // Initialize liquid buttons
-    document.addEventListener('DOMContentLoaded', () => {
-      const buttons = document.querySelectorAll('.liquid-button');
-      buttons.forEach(button => {
-        button.liquidButton = new LiquidButton(button);
-      });
-    });
-
     // Sliding Navigation Logic
     const slidingNav = document.getElementById('slidingNav');
     const navToggle = document.getElementById('navToggle');
