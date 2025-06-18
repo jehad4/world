@@ -283,6 +283,26 @@
       box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
     }
 
+    /* Limited Time Badge */
+    .limited-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff2e00;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
     /* Floating Add to Cart Button */
     .floating-cart-btn {
       position: fixed;
@@ -495,41 +515,59 @@
   <div class="container">
     <div class="section-header">💰 Gold Packages</div>
     <div class="package-grid">
-      <div class="package-card" data-amount="100" data-price="105">
-        <div class="gold-amount">100 Gold</div>
-        <div class="price">105 TK</div>
+      <div class="package-card" data-amount="105" data-price="110">
+        <div class="gold-amount">105 Gold</div>
+        <div class="price">110 TK</div>
       </div>
       <div class="package-card" data-amount="320" data-price="320">
         <div class="gold-amount">320 Gold</div>
         <div class="price">320 TK</div>
       </div>
-      <div class="package-card" data-amount="540" data-price="520">
+      <div class="package-card" data-amount="540" data-price="525">
         <div class="gold-amount">540 Gold</div>
-        <div class="price"><span class="original-price">540 TK</span> 520 TK <span class="discount">Save 20 TK</span></div>
+        <div class="price">525 TK</div>
       </div>
-      <div class="package-card" data-amount="1100" data-price="1000">
+      <div class="package-card" data-amount="1100" data-price="1050">
         <div class="gold-amount">1100 Gold</div>
-        <div class="price"><span class="original-price">1100 TK</span> 1000 TK <span class="discount">Save 100 TK</span></div>
+        <div class="price">1050 TK</div>
       </div>
-      <div class="package-card" data-amount="2260" data-price="2000">
+      <div class="package-card" data-amount="2260" data-price="2050">
         <div class="gold-amount">2260 Gold</div>
-        <div class="price"><span class="original-price">2260 TK</span> 2000 TK <span class="discount">Save 260 TK</span></div>
+        <div class="price">2050 TK</div>
       </div>
-      <div class="package-card" data-amount="5800" data-price="5100">
+      <div class="package-card" data-amount="5800" data-price="5050">
         <div class="gold-amount">5800 Gold</div>
-        <div class="price"><span class="original-price">5800 TK</span> 5100 TK <span class="discount">Save 700 TK</span></div>
+        <div class="price">5050 TK</div>
       </div>
     </div>
 
     <div class="section-header">🎫 Strike Passes</div>
     <div class="package-grid">
-      <div class="package-card" data-amount="strike-pass" data-price="425">
-        <div class="gold-amount">Strike Pass</div>
-        <div class="price">425 TK</div>
+      <div class="package-card" data-amount="strike-pass-elite" data-price="420">
+        <div class="gold-amount">Strike Pass Elite</div>
+        <div class="price">420 TK</div>
       </div>
       <div class="package-card" data-amount="strike-pass-premium" data-price="950">
         <div class="gold-amount">Strike Pass Premium</div>
         <div class="price">950 TK</div>
+      </div>
+      <div class="package-card" data-amount="level-up-pass" data-price="210">
+        <div class="gold-amount">Level Up Pass</div>
+        <div class="price">210 TK</div>
+      </div>
+    </div>
+
+    <div class="section-header">⏳ Limited Time Offers</div>
+    <div class="package-grid">
+      <div class="package-card" data-amount="special-bundle" data-price="750">
+        <div class="limited-badge">Limited Time</div>
+        <div class="gold-amount">Special Bundle Pack</div>
+        <div class="price">750 TK</div>
+      </div>
+      <div class="package-card" data-amount="exclusive-skin" data-price="350">
+        <div class="limited-badge">Limited Time</div>
+        <div class="gold-amount">Exclusive Skin Pack</div>
+        <div class="price">350 TK</div>
       </div>
     </div>
   </div>
