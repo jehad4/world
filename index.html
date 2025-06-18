@@ -318,6 +318,12 @@
       margin-top: 30px;
     }
 
+    /* Card link styles */
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -443,7 +449,12 @@
   <div class="container">
     <div class="section-header">🎮 Select a Game</div>
     <div class="card-grid">
-      <div class="card">productlist/bloodstrike.html<img src="img/bloodstrike.png" alt="Blood Strike"><div>Blood Strike</div></div>
+      <a href="productlist/bloodstrike.html" class="card-link">
+        <div class="card">
+          <img src="img/bloodstrike.png" alt="Blood Strike">
+          <div>Blood Strike</div>
+        </div>
+      </a>
       <div class="card"><img src="img/racingmaster.png" alt="Racing Master"><div>Racing Master</div></div>
       <div class="card"><img src="img/genshin.png" alt="Genshin"><div>Genshin Impact</div></div>
       <div class="card"><img src="img/deltaforce.png" alt="Delta Force"><div>Delta Force</div></div>
