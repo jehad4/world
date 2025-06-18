@@ -465,30 +465,30 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="nav-links" id="navLinks">
-        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="../index.html"><i class="fas fa-home"></i> Home</a>
         <a href="#"><i class="fas fa-gamepad"></i> Games</a>
         <a href="#"><i class="fas fa-tv"></i> Subscriptions</a>
         <a href="#"><i class="fas fa-gift"></i> Promotions</a>
-        <a href="#"><i class="fas fa-headset"></i> Support</a>
+        <a href="../support.html"><i class="fas fa-headset"></i> Support</a>
       </div>
     </div>
   </nav>
 
-  <div class="banner">Gold Packages & Strike Passes</div>
+  <div class="banner">Blood Strike Gold Packages & Strike Passes</div>
 
   <div class="header">
     <div class="logo">
       <i class="fas fa-gamepad"></i>
-      GameTopUp
+      GixGameShop
     </div>
     <div class="auth-buttons">
       <div class="notification-icon" title="Notifications">
         <i class="fas fa-bell"></i>
       </div>
-      <button class="auth-btn login-btn" id="loginBtn" onclick="googleLogin()">
+      <button class="auth-btn login-btn" id="loginBtn">
         <i class="fab fa-google"></i> Sign in with Google
       </button>
-      <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
+      <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='../profile.html'">
         <i class="fas fa-user"></i> Profile
       </button>
     </div>
@@ -553,6 +553,61 @@
       <path d="M22,16.21V18L14,12L22,6V7.79C22,8.33 21.75,8.84 21.32,9.14L15.5,12L21.32,14.86C21.75,15.16 22,15.67 22,16.21Z" />
     </svg>
   </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
+      authDomain: "gixgame.firebaseapp.com",
+      databaseURL: "https://gixgame-default-rtdb.firebaseio.com",
+      projectId: "gixgame",
+      storageBucket: "gixgame.firebasestorage.app",
+      messagingSenderId: "808321553860",
+      appId: "1:808321553860:web:d95a7bcab2b3af49308091"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const database = getDatabase(app);
+
+    // Auth state observer
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("profileBtn").style.display = "flex";
+      } else {
+        // User is signed out
+        document.getElementById("loginBtn").style.display = "flex";
+        document.getElementById("profileBtn").style.display = "none";
+      }
+    });
+
+    // Google login function
+    window.googleLogin = function() {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // User signed in
+          const user = result.user;
+          console.log("User signed in:", user);
+        })
+        .catch((error) => {
+          console.error("Login error:", error);
+          alert("Login failed: " + error.message);
+        });
+    };
+
+    // Add click event to login button
+    document.getElementById("loginBtn").addEventListener("click", googleLogin);
+  </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
   <script>
@@ -636,7 +691,8 @@
         card.classList.add('selected');
         selectedPackage = {
           amount: card.dataset.amount,
-          price: card.dataset.price
+          price: card.dataset.price,
+          name: card.querySelector('.gold-amount').textContent
         };
         
         // Make the floating cart button blink orange
@@ -661,10 +717,41 @@
     });
 
     // Floating Add to Cart Button
-    floatingCartBtn.addEventListener('click', e => {
+    floatingCartBtn.addEventListener('click', async e => {
       if(!selectedPackage) {
         alert('Please select a package first!');
         return;
+      }
+
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Please sign in to add items to your cart!');
+        return;
+      }
+
+      try {
+        // Add item to cart in Firebase
+        const cartRef = ref(database, `users/${user.uid}/cart`);
+        const newItemRef = push(cartRef);
+        
+        await set(newItemRef, {
+          game: 'Blood Strike',
+          package: selectedPackage.name,
+          amount: selectedPackage.amount,
+          price: selectedPackage.price,
+          timestamp: Date.now()
+        });
+
+        // Show success animation
+        floatingCartBtn.classList.add('blink');
+        setTimeout(() => {
+          floatingCartBtn.classList.remove('blink');
+        }, 1500);
+
+        alert(`${selectedPackage.name} added to cart!`);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert("Failed to add to cart. Please try again.");
       }
     });
 
