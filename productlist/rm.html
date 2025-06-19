@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Racing Master - Top Up</title>
-  <style>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=7hMim_dl6jGAzi4LT6YIUBOF1CUrV6C3XzQyHawiBk8gOCFTWaCeY9JnG9Tk1TLMs10UHAUf-SNZ-NC5urtxyvNU-uC_xboc3YOUDUdbW2cnW0oi1ztZrXvLylAsdW60YRwsBTtLC6KkVdcUPFXx9lK3nhAbnjtm_VuQ8v57z2x9iBWNw7BPdaUfkua1Z_kF8HmeZjaKHElbLZtyIce4B7r6XBZB_XXftpNec996GUulmYLPOEV16ffgV-GNBwJSndDa4PlKBc206n0zvtN4Ag" charset="UTF-8"></script><style>
     * {
       margin: 0;
       padding: 0;
@@ -16,6 +16,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       color: #fff;
+      background-color: #000;
     }
 
     /* Background animation */
@@ -26,7 +27,37 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: linear-gradient(135deg, #ff2e00, #ff6600);
+      background: #000;
+    }
+
+    /* Red Firefly Animation */
+    .firefly {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      box-shadow: 0 0 10px 2px #ff0000;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      animation: firefly-twinkle 6s infinite ease-in-out;
+    }
+
+    @keyframes firefly-twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      20%, 80% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px 3px #ff0000;
+      }
     }
 
     /* Sliding Navigation Bar */
@@ -35,11 +66,12 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.95);
       backdrop-filter: blur(10px);
       z-index: 1000;
       transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-bottom: 1px solid #ff3333;
     }
 
     .sliding-nav.show {
@@ -61,6 +93,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      color: #ffffff;
     }
 
     .nav-links {
@@ -83,7 +116,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: #ffcc00;
+      background: #ff3333;
       transition: width 0.3s;
     }
 
@@ -107,13 +140,12 @@
       font-weight: bold;
       padding: 15px;
       color: #fff;
-      text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
       margin: 60px auto 20px;
       max-width: 80%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(10, 10, 10, 0.9);
       border-radius: 15px;
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -123,6 +155,11 @@
       align-items: center;
       padding: 0 20px;
       flex-wrap: wrap;
+      background: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      border: 1px solid #ff3333;
     }
 
     .logo {
@@ -131,6 +168,7 @@
       gap: 10px;
       font-size: 24px;
       font-weight: bold;
+      color: #ffffff;
     }
 
     .auth-buttons {
@@ -143,13 +181,14 @@
       font-size: 20px;
       cursor: pointer;
       position: relative;
+      color: #ffffff;
     }
 
     .notification-icon::after {
       content: '';
       width: 8px;
       height: 8px;
-      background-color: red;
+      background-color: #ff3333;
       border-radius: 50%;
       position: absolute;
       top: -2px;
@@ -163,39 +202,43 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
-    }
-
-    .login-btn {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-
-    .login-btn:hover {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .profile-btn {
-      background-color: #ffcc00;
-      color: #333;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .login-btn {
+      background-color: rgba(255, 51, 51, 0.2);
+      color: white;
+      border: 1px solid #ff3333;
+    }
+
+    .login-btn:hover {
+      background-color: rgba(255, 51, 51, 0.3);
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+    }
+
+    .profile-btn {
+      background-color: #ff3333;
+      color: #ffffff;
+      border: 1px solid #ff3333;
+    }
+
     .profile-btn:hover {
-      background-color: #ffd633;
+      background-color: #ff5555;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
     }
 
     .container {
       max-width: 1200px;
       margin: auto;
       padding: 20px;
-      background-color: rgba(0, 0, 0, 0.3);
+      background: rgba(10, 10, 10, 0.9);
       border-radius: 15px;
       backdrop-filter: blur(6px);
       margin-top: 20px;
       margin-bottom: 80px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -208,10 +251,10 @@
       display: inline-block;
       width: 100%;
       padding: 15px 30px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(20, 20, 20, 0.9);
       border-radius: 15px;
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
@@ -223,7 +266,7 @@
       transform: translateX(-50%);
       width: 80px;
       height: 3px;
-      background: linear-gradient(90deg, #ff2e00, #ffcc00);
+      background: linear-gradient(90deg, #ff3333, #ffffff);
       border-radius: 3px;
     }
 
@@ -236,11 +279,11 @@
     }
 
     .package-card {
-      background-color: rgba(255, 255, 255, 0.1);
+      background: rgba(30, 30, 30, 0.9);
       border-radius: 10px;
       padding: 20px;
       transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333;
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -248,31 +291,45 @@
 
     .package-card:hover {
       transform: translateY(-5px);
-      background-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.2);
     }
 
     .package-card .gem-amount {
       font-size: 24px;
       font-weight: bold;
-      color: #ffcc00;
+      color: #ff3333;
       margin-bottom: 10px;
     }
 
     .package-card .bonus {
       font-size: 16px;
-      color: #00ffaa;
+      color: #ff9999;
       margin-bottom: 10px;
     }
 
     .package-card .price {
       font-size: 20px;
       font-weight: 600;
+      color: #ffffff;
+    }
+
+    .package-card .original-price {
+      text-decoration: line-through;
+      color: rgba(255, 255, 255, 0.6);
+      margin-right: 10px;
+    }
+
+    .package-card .discount {
+      background-color: #ff3333;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 14px;
     }
 
     .package-card.selected {
-      border: 2px solid #ffcc00;
-      box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.7);
     }
 
     /* Limited Time Badge */
@@ -280,7 +337,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: #ff2e00;
+      background-color: #ff3333;
       color: white;
       padding: 3px 8px;
       border-radius: 4px;
@@ -311,7 +368,7 @@
       line-height: 24px;
       font-weight: 600;
       font-size: 16px;
-      background: #ff6600;
+      background: #ff3333;
       outline: none;
       color: white;
       border-radius: 50px;
@@ -320,22 +377,27 @@
       transition: all 0.3s;
     }
 
+    .floating-cart-btn:hover {
+      background: #ff5555;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+
     .floating-cart-btn.blink {
       animation: blink 0.5s 3;
     }
 
-    .floating-cart-btn.orange-blink {
-      animation: orangeBlink 0.5s 3, shake 0.5s;
+    .floating-cart-btn.red-blink {
+      animation: redBlink 0.5s 3, shake 0.5s;
     }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.5); }
+      50% { opacity: 0.5; }
     }
 
-    @keyframes orangeBlink {
-      0%, 100% { background-color: #ff6600; }
-      50% { background-color: #ff8c00; }
+    @keyframes redBlink {
+      0%, 100% { background-color: #ff3333; }
+      50% { background-color: #ff5555; }
     }
 
     @keyframes shake {
@@ -349,7 +411,7 @@
       position: fixed;
       bottom: 90px;
       right: 30px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(20, 20, 20, 0.9);
       border-radius: 50px;
       padding: 10px 20px;
       display: flex;
@@ -358,7 +420,7 @@
       z-index: 1000;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333;
       transform: translateY(20px);
       opacity: 0;
       transition: all 0.3s;
@@ -370,7 +432,7 @@
     }
 
     .cart-counter .count {
-      background: #ff6600;
+      background: #ff3333;
       color: white;
       width: 25px;
       height: 25px;
@@ -390,7 +452,7 @@
       z-index: 999;
       opacity: 0;
       transition: opacity 0.3s;
-      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.8));
+      filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.8));
     }
 
     .car-animation.visible {
@@ -400,7 +462,7 @@
     .car-animation svg {
       width: 100%;
       height: 100%;
-      fill: url(#carGradient);
+      fill: #ff3333;
     }
 
     @media (max-width: 768px) {
@@ -411,9 +473,10 @@
         top: 70px;
         left: 0;
         width: 100%;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.95);
         padding: 20px;
         gap: 15px;
+        border-top: 1px solid #ff3333;
       }
 
       .nav-links.show {
@@ -456,22 +519,15 @@
 <body>
   <canvas id="backgroundCanvas"></canvas>
   
-  <!-- SVG Gradient for Car -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <linearGradient id="carGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:#ffffff; stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#ffb74d; stop-opacity:1" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <!-- Red Fireflies -->
+  <div id="fireflies-container"></div>
   
   <!-- Sliding Navigation Bar -->
   <nav class="sliding-nav" id="slidingNav">
     <div class="nav-container">
       <div class="nav-logo">
         <i class="fas fa-car"></i>
-        <span>Racing Master</span>
+        <span>RacingMaster</span>
       </div>
       <button class="nav-toggle" id="navToggle">
         <i class="fas fa-bars"></i>
@@ -490,8 +546,6 @@
 
   <div class="header">
     <div class="logo">
-      <i class="fas fa-car"></i>
-      Racing Master
     </div>
     <div class="auth-buttons">
       <div class="notification-icon" title="Notifications">
@@ -507,7 +561,7 @@
   </div>
 
   <div class="container">
-    <div class="section-header"><i class="fas fa-gem"></i> Gems Packages</div>
+    <div class="section-header">💎 Gems Packages</div>
     <div class="package-grid">
       <div class="package-card" data-amount="70" data-price="120" data-name="70 Gems (+4 Bonus)">
         <div class="gem-amount">70 Gems</div>
@@ -555,14 +609,13 @@
         <div class="price">5300 Taka</div>
       </div>
       <div class="package-card" data-amount="6600" data-price="10260" data-name="6600 Gems (+330 Bonus)">
-        <div class="limited-badge">Popular</div>
         <div class="gem-amount">6600 Gems</div>
         <div class="bonus">+330 Bonus Gems</div>
         <div class="price">10260 Taka</div>
       </div>
     </div>
 
-    <div class="section-header"><i class="fas fa-ticket"></i> Premium Passes</div>
+    <div class="section-header">🎟️ Premium Passes</div>
     <div class="package-grid">
       <div class="package-card" data-amount="weekly-card" data-price="120" data-name="Weekly Card">
         <div class="gem-amount">Weekly Card</div>
@@ -573,7 +626,6 @@
         <div class="price">280 Taka</div>
       </div>
       <div class="package-card" data-amount="deluxe-mp" data-price="600" data-name="Deluxe MP">
-        <div class="limited-badge">Best Value</div>
         <div class="gem-amount">Deluxe MP</div>
         <div class="price">600 Taka</div>
       </div>
@@ -594,7 +646,6 @@
         <div class="price">700 Taka</div>
       </div>
       <div class="package-card" data-amount="value-outfit" data-price="120" data-name="Value Outfit Pack">
-        <div class="limited-badge">New</div>
         <div class="gem-amount">Value Outfit Pack</div>
         <div class="price">120 Taka</div>
       </div>
@@ -615,16 +666,20 @@
   <!-- Car Animation -->
   <div class="car-animation" id="carAnimation">
     <svg viewBox="0 0 24 24">
-      <path d="M18.92,6.01C18.72,5.42 18.16,5 17.5,5H6.5C5.84,5 5.29,5.42 5.08,6.01L3,12V20C3,20.55 3.45,21 4,21H5C5.55,21 6,20.55 6,20V19H18V20C18,20.55 18.45,21 19,21H20C20.55,21 21,20.55 21,20V12L18.92,6.01ZM6.5,16C5.67,16 5,15.33 5,14.5C5,13.67 5.67,13 6.5,13C7.33,13 8,13.67 8,14.5C8,15.33 7.33,16 6.5,16ZM17.5,16C16.67,16 16,15.33 16,14.5C16,13.67 16.67,13 17.5,13C18.33,13 19,13.67 19,14.5C19,15.33 18.33,16 17.5,16ZM5,11L6.5,6.5H17.5L19,11H5Z"/>
+      <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.08 3.11H5.77L6.85 7zM19 17H5v-5h14v5z"/>
+      <circle cx="7.5" cy="14.5" r="1.5"/>
+      <circle cx="16.5" cy="14.5" r="1.5"/>
     </svg>
   </div>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script>
-    // Firebase configuration
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
       authDomain: "gixgame.firebaseapp.com",
@@ -636,17 +691,19 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const database = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const database = getDatabase(app);
 
     // Auth state observer
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
+        // User is signed in
         document.getElementById("loginBtn").style.display = "none";
         document.getElementById("profileBtn").style.display = "flex";
       } else {
+        // User is signed out
         document.getElementById("loginBtn").style.display = "flex";
         document.getElementById("profileBtn").style.display = "none";
       }
@@ -654,9 +711,11 @@
 
     // Google login function
     window.googleLogin = function() {
-      auth.signInWithPopup(provider)
+      signInWithPopup(auth, provider)
         .then((result) => {
-          console.log("User signed in:", result.user);
+          // User signed in
+          const user = result.user;
+          console.log("User signed in:", user);
         })
         .catch((error) => {
           console.error("Login error:", error);
@@ -666,7 +725,56 @@
 
     // Add click event to login button
     document.getElementById("loginBtn").addEventListener("click", googleLogin);
-    
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script>
+    // Create red fireflies
+    function createFireflies() {
+      const container = document.getElementById('fireflies-container');
+      const colors = ['#ff3333', '#ff5555', '#ff0000'];
+      
+      for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        
+        // Random position
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation properties
+        const duration = 4 + Math.random() * 4;
+        const delay = Math.random() * 8;
+        const size = 3 + Math.random() * 3;
+        
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(firefly);
+      }
+    }
+
+    // Sliding Navigation Logic
+    const slidingNav = document.getElementById('slidingNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // Show nav after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        slidingNav.classList.add('show');
+      }, 500);
+      createFireflies();
+    });
+
+    // Toggle mobile menu
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
     // Live Background using Canvas
     const canvas = document.getElementById('backgroundCanvas');
     const ctx = canvas.getContext('2d');
@@ -682,7 +790,7 @@
       particles.forEach((p, i) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        ctx.fillStyle = `rgba(255,100,100,${p.alpha})`;
         ctx.fill();
         p.y -= p.speed;
         if (p.y < 0) p.y = h + Math.random() * 100;
@@ -697,7 +805,7 @@
           x: Math.random() * w,
           y: Math.random() * h,
           size: Math.random() * 2 + 1,
-          alpha: Math.random(),
+          alpha: Math.random() * 0.2,
           speed: Math.random() * 0.5 + 0.2
         });
       }
@@ -711,23 +819,6 @@
     resize();
     initParticles(150);
     draw();
-
-    // Sliding Navigation Logic
-    const slidingNav = document.getElementById('slidingNav');
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-
-    // Show nav after page loads
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        slidingNav.classList.add('show');
-      }, 500);
-    });
-
-    // Toggle mobile menu
-    navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('show');
-    });
 
     // Package Selection Logic
     const packageCards = document.querySelectorAll('.package-card');
@@ -751,10 +842,10 @@
           name: card.dataset.name
         };
         
-        // Make the floating cart button blink orange
-        floatingCartBtn.classList.add('orange-blink');
+        // Make the floating cart button blink red
+        floatingCartBtn.classList.add('red-blink');
         setTimeout(() => {
-          floatingCartBtn.classList.remove('orange-blink');
+          floatingCartBtn.classList.remove('red-blink');
         }, 1500);
         
         // Animate car to cart
@@ -773,7 +864,7 @@
     });
 
     // Floating Add to Cart Button
-    floatingCartBtn.addEventListener('click', async () => {
+    floatingCartBtn.addEventListener('click', async e => {
       if(!selectedPackage) {
         alert('Please select a package first!');
         return;
@@ -787,10 +878,10 @@
 
       try {
         // Add item to cart in Firebase
-        const cartRef = database.ref(`users/${user.uid}/cart`);
-        const newItemRef = cartRef.push();
+        const cartRef = ref(database, `users/${user.uid}/cart`);
+        const newItemRef = push(cartRef);
         
-        await newItemRef.set({
+        await set(newItemRef, {
           game: 'Racing Master',
           package: selectedPackage.name,
           amount: selectedPackage.amount,
@@ -858,6 +949,5 @@
       });
     }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 </body>
 </html>
