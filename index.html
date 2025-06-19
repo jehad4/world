@@ -389,7 +389,7 @@
       }
       
       .logo img {
-        height: 30px;
+        height: 50px;
       }
       
       .announcement-box {
@@ -425,7 +425,7 @@
     const provider = new GoogleAuthProvider();
     const database = getDatabase(app);
 
-    // Admin emails
+    // Admin emails - only these emails will see the admin button
     const adminEmails = ["workonline.mahmud@gmail.com", "joyjehad28@gmail.com"];
 
     window.googleLogin = function () {
@@ -449,6 +449,7 @@
         document.getElementById("loginBtn").style.display = "none";
         document.getElementById("profileBtn").style.display = "flex";
         
+        // Check if user is admin
         if (adminEmails.includes(user.email)) {
           document.getElementById("adminPanelBtn").style.display = "flex";
         } else {
@@ -473,6 +474,9 @@
         }
       });
     }
+
+    // Call loadAnnouncement when the module loads
+    loadAnnouncement();
   </script>
 </head>
 <body>
@@ -503,7 +507,7 @@
 
     <div class="header content-box">
       <div class="logo">
-        <i class="fas fa-gamepad"></i>
+      
         <img src="logo.png" alt="Gix Game Shop Logo">
       </div>
       
@@ -526,7 +530,7 @@
         <button class="auth-btn admin-panel-btn" id="adminPanelBtn" onclick="window.location.href='admin.html'" style="display: none;">
           <i class="fas fa-cog"></i> Admin
         </button>
-        <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
+        <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'" style="display: none;">
           <i class="fas fa-user"></i> Profile
         </button>
       </div>
@@ -590,9 +594,6 @@
       setTimeout(() => {
         slidingNav.classList.add('show');
       }, 500);
-      
-      // Load announcement
-      loadAnnouncement();
     });
 
     // Toggle mobile menu
