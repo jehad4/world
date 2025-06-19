@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Legends - Diamonds</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=huys0ge1wqSa8u8Wub_IxgVxSp1wiU8OkQmZAyKBsD3LCdelKf5WhKRDiT6qkxS3A4b9ePNLyoGwCmLJgYIsxEJSE-xjVxGIoH0nNlqKEN5Yp_CVBhPs2gywM9PmoUOs7s-SMxqHIQGg3mx3WCyiUnQkxzE6t5uZi-RGO-ZOHIdIKj3xGGYVc2ML-A4LpPd4fjemB5jY_ncIqXN8v5mFZcAD7ykJLkK5lw5zco_MvH9nE189HWFoV_AWEM5XKHIKSp8X1by_o-opNsDRYjSFJw" charset="UTF-8"></script><style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #ffffff;
+      background-color: #000000;
+    }
+
+    /* Red Firefly Animation */
+    .firefly {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      box-shadow: 0 0 10px 2px #ff0000;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      animation: firefly-twinkle 6s infinite ease-in-out;
+    }
+
+    @keyframes firefly-twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      20%, 80% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px 3px #ff0000;
+      }
+    }
+
+    /* Content Box Styling */
+    .content-box {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      border: 1px solid #ff3333;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    /* Banner Style */
+    .banner {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      padding: 20px;
+      color: #ffffff;
+      margin-top: 60px;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #ff3333;
+      background-image: url('https://www.oneesports.gg/wp-content/uploads/2021/08/Mobile-Legends-Bang-Bang-5th-anniversary.jpg');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay;
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 28px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      color: #ffffff;
+    }
+
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff3333, #ffffff);
+      border-radius: 3px;
+    }
+
+    /* Packages Grid */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .package-card {
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #ff3333;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      position: relative;
+      text-align: center;
+    }
+
+    .package-card:hover {
+      transform: translateY(-5px);
+      border: 1px solid #ff5555;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .package-card .diamond-amount {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ff9a00;
+      margin-bottom: 5px;
+    }
+
+    .package-card .price {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .package-card.selected {
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+
+    /* Limited Time Badge */
+    .limited-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #ff3333;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Special Package (Passes) */
+    .special-card {
+      background-color: rgba(255, 215, 0, 0.1);
+      border: 1px solid #ffd700;
+    }
+
+    .special-card:hover {
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .special-card .diamond-amount {
+      color: #ffd700;
+    }
+
+    /* Floating Add to Cart Button */
+    .floating-cart-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 0;
+      padding: 12px 24px;
+      min-width: 180px;
+      text-align: center;
+      line-height: 24px;
+      font-weight: 600;
+      font-size: 16px;
+      background: #ff3333;
+      outline: none;
+      color: white;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .floating-cart-btn.blink {
+      animation: blink 0.5s 3;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Cart Counter */
+    .cart-counter {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .cart-counter.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .cart-counter .count {
+      background: #ff3333;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Diamond Animation */
+    .diamond-animation {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s;
+      filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.8));
+    }
+
+    .diamond-animation.visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .package-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+      }
+
+      .package-card {
+        padding: 12px;
+      }
+
+      .package-card .diamond-amount {
+        font-size: 18px;
+      }
+
+      .package-card .price {
+        font-size: 16px;
+      }
+
+      .floating-cart-btn {
+        min-width: 150px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      
+      .diamond-animation {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Red Fireflies will be added by JavaScript -->
+  
+  <div class="main-container">
+    <div class="banner content-box">Mobile Legends Diamonds</div>
+
+    <div class="content-box">
+      <h2 class="section-header"><i class="fas fa-gem"></i> Diamonds</h2>
+      <div class="package-grid">
+        <div class="package-card" data-amount="55" data-price="110" data-name="55 Diamonds">
+          <div class="diamond-amount">55 Diamonds</div>
+          <div class="price">110 Taka</div>
+        </div>
+        <div class="package-card" data-amount="86" data-price="160" data-name="86 Diamonds">
+          <div class="diamond-amount">86 Diamonds</div>
+          <div class="price">160 Taka</div>
+        </div>
+        <div class="package-card" data-amount="165" data-price="310" data-name="165 Diamonds">
+          <div class="diamond-amount">165 Diamonds</div>
+          <div class="price">310 Taka</div>
+        </div>
+        <div class="package-card" data-amount="257" data-price="450" data-name="257 Diamonds">
+          <div class="diamond-amount">257 Diamonds</div>
+          <div class="price">450 Taka</div>
+        </div>
+        <div class="package-card" data-amount="343" data-price="620" data-name="343 Diamonds">
+          <div class="diamond-amount">343 Diamonds</div>
+          <div class="price">620 Taka</div>
+        </div>
+        <div class="package-card" data-amount="429" data-price="750" data-name="429 Diamonds">
+          <div class="diamond-amount">429 Diamonds</div>
+          <div class="price">750 Taka</div>
+        </div>
+        <div class="package-card" data-amount="514" data-price="900" data-name="514 Diamonds">
+          <div class="diamond-amount">514 Diamonds</div>
+          <div class="price">900 Taka</div>
+        </div>
+        <div class="package-card" data-amount="706" data-price="1200" data-name="706 Diamonds">
+          <div class="limited-badge">Popular</div>
+          <div class="diamond-amount">706 Diamonds</div>
+          <div class="price">1200 Taka</div>
+        </div>
+        <div class="package-card" data-amount="792" data-price="1360" data-name="792 Diamonds">
+          <div class="diamond-amount">792 Diamonds</div>
+          <div class="price">1360 Taka</div>
+        </div>
+        <div class="package-card" data-amount="878" data-price="1520" data-name="878 Diamonds">
+          <div class="diamond-amount">878 Diamonds</div>
+          <div class="price">1520 Taka</div>
+        </div>
+        <div class="package-card" data-amount="1049" data-price="1800" data-name="1049 Diamonds">
+          <div class="diamond-amount">1049 Diamonds</div>
+          <div class="price">1800 Taka</div>
+        </div>
+        <div class="package-card" data-amount="1412" data-price="2400" data-name="1412 Diamonds">
+          <div class="limited-badge">Best Value</div>
+          <div class="diamond-amount">1412 Diamonds</div>
+          <div class="price">2400 Taka</div>
+        </div>
+        <div class="package-card" data-amount="1584" data-price="2700" data-name="1584 Diamonds">
+          <div class="diamond-amount">1584 Diamonds</div>
+          <div class="price">2700 Taka</div>
+        </div>
+        <div class="package-card" data-amount="2195" data-price="3600" data-name="2195 Diamonds">
+          <div class="diamond-amount">2195 Diamonds</div>
+          <div class="price">3600 Taka</div>
+        </div>
+        <div class="package-card" data-amount="3688" data-price="6000" data-name="3688 Diamonds">
+          <div class="diamond-amount">3688 Diamonds</div>
+          <div class="price">6000 Taka</div>
+        </div>
+      </div>
+
+      <h2 class="section-header"><i class="fas fa-ticket-alt"></i> Passes</h2>
+      <div class="package-grid">
+        <div class="package-card special-card" data-amount="weekly" data-price="195" data-name="Weekly Pass">
+          <div class="diamond-amount">Weekly Pass</div>
+          <div class="price">195 Taka</div>
+        </div>
+        <div class="package-card special-card" data-amount="twilight" data-price="1000" data-name="Twilight Pass">
+          <div class="diamond-amount">Twilight Pass</div>
+          <div class="price">1000 Taka</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Add to Cart Button -->
+  <button class="floating-cart-btn" id="floatingCartBtn">
+    <i class="fas fa-shopping-cart"></i> Add to Cart
+  </button>
+
+  <!-- Cart Counter -->
+  <div class="cart-counter" id="cartCounter">
+    <span>Items in cart:</span>
+    <span class="count" id="cartCount">0</span>
+  </div>
+
+  <!-- Diamond Animation -->
+  <div class="diamond-animation" id="diamondAnimation">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,2L4,12L12,22L20,12L12,2M12,4L18,12L12,20L6,12L12,4Z" />
+    </svg>
+  </div>
+
+  <script>
+    // Create red fireflies
+    function createFireflies() {
+      const colors = [
+        '#ff3333', // Bright red
+        '#ff5555', // Lighter red
+        '#ff0000'  // Pure red
+      ];
+      
+      for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        
+        // Random position
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation properties
+        const duration = 4 + Math.random() * 4;
+        const delay = Math.random() * 8;
+        const size = 3 + Math.random() * 3;
+        
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(firefly);
+      }
+    }
+
+    // Package Selection Logic
+    const packageCards = document.querySelectorAll('.package-card');
+    const floatingCartBtn = document.getElementById('floatingCartBtn');
+    const cartCounter = document.getElementById('cartCounter');
+    const cartCount = document.getElementById('cartCount');
+    const diamondAnimation = document.getElementById('diamondAnimation');
+    let selectedPackage = null;
+    let cartItems = 0;
+
+    packageCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selected class from all cards
+        packageCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        card.classList.add('selected');
+        selectedPackage = {
+          amount: card.dataset.amount,
+          price: card.dataset.price,
+          name: card.dataset.name
+        };
+        
+        // Make the floating cart button blink
+        floatingCartBtn.classList.add('blink');
+        setTimeout(() => {
+          floatingCartBtn.classList.remove('blink');
+        }, 1500);
+        
+        // Animate diamond to cart
+        animateDiamondToCart();
+        
+        // Increment cart counter
+        cartItems++;
+        cartCount.textContent = cartItems;
+        
+        // Show cart counter
+        cartCounter.classList.add('show');
+        setTimeout(() => {
+          cartCounter.classList.remove('show');
+        }, 2000);
+      });
+    });
+
+    // Floating Add to Cart Button
+    floatingCartBtn.addEventListener('click', () => {
+      if(!selectedPackage) {
+        alert('Please select a package first!');
+        return;
+      }
+      
+      alert(`You selected: ${selectedPackage.name}\nPrice: ${selectedPackage.price} Taka`);
+      // Here you would typically proceed to payment
+    });
+
+    function animateDiamondToCart() {
+      // Get position of selected package
+      const selectedCard = document.querySelector('.package-card.selected');
+      const cardRect = selectedCard.getBoundingClientRect();
+      const startX = cardRect.left + cardRect.width/2;
+      const startY = cardRect.top + cardRect.height/2;
+      
+      // Get position of cart counter
+      const cartRect = cartCounter.getBoundingClientRect();
+      const endX = cartRect.left + cartRect.width/2;
+      const endY = cartRect.top + cartRect.height/2;
+      
+      // Set diamond starting position
+      diamondAnimation.style.left = `${startX}px`;
+      diamondAnimation.style.top = `${startY}px`;
+      diamondAnimation.classList.add('visible');
+      
+      // Animate diamond to cart
+      const duration = 1; // seconds
+      const size = 60;
+      
+      diamondAnimation.animate([
+        { left: `${startX}px`, top: `${startY}px`, opacity: 1 },
+        { left: `${endX}px`, top: `${endY}px`, opacity: 0 }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+      
+      // Add rotation effect
+      diamondAnimation.animate([
+        { transform: 'rotate(0deg)' },
+        { transform: 'rotate(360deg)' }
+      ], {
+        duration: duration * 1000,
+        easing: "linear"
+      });
+      
+      // Add scaling effect
+      diamondAnimation.animate([
+        { width: `${size}px`, height: `${size}px` },
+        { width: `${size * 1.5}px`, height: `${size * 1.5}px` },
+        { width: `${size}px`, height: `${size}px` },
+        { width: `${size * 1.5}px`, height: `${size * 1.5}px` },
+        { width: `${size}px`, height: `${size}px` }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-in-out"
+      });
+      
+      // Hide after animation
+      setTimeout(() => {
+        diamondAnimation.classList.remove('visible');
+      }, duration * 1000);
+    }
+
+    // Initialize animations when page loads
+    window.addEventListener('load', () => {
+      createFireflies();
+    });
+  </script>
+</body>
+</html>
