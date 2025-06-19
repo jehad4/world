@@ -1,911 +1,696 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ginipay Admin Dashboard</title>
-    <style>
-        /* Base Styles with Animation */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
-        
-        body {
-            background: linear-gradient(135deg, #ff2e00, #ff6600, #ff2e00);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh;
-            padding: 20px;
-            color: #fff;
-            overflow-x: hidden;
-        }
-        
-        /* Container Styles with Swipe Animation */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transform: translateX(0);
-            transition: transform 0.4s ease;
-        }
-        
-        .main-container.swipe-in {
-            transform: translateX(0);
-        }
-        
-        /* Admin Header with Flame Effect */
-        .admin-header {
-            padding: 30px;
-            background: linear-gradient(to right, #e21313, #e82c0c);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .admin-header::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: linear-gradient(180deg, rgba(255,100,0,0.8), transparent);
-            filter: blur(5px);
-        }
-        
-        .admin-header h1 {
-            margin-bottom: 0;
-            font-size: 28px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .admin-header h1::after {
-            content: "";
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 3px;
-        }
-        
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .admin-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .admin-btn::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .admin-btn:hover::after {
-            left: 100%;
-        }
-        
-        .admin-btn i {
-            margin-right: 8px;
-        }
-        
-        .refresh-btn {
-            background-color: #ff6600;
-            color: white;
-        }
-        
-        .refresh-btn:hover {
-            background-color: #e65c00;
-            transform: translateY(-2px);
-        }
-        
-        .clear-btn {
-            background-color: #e21313;
-            color: white;
-        }
-        
-        .clear-btn:hover {
-            background-color: #c91111;
-            transform: translateY(-2px);
-        }
-        
-        /* Google Sign-In Button */
-        .google-signin {
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .google-signin:hover {
-            background-color: #357ABD;
-            transform: translateY(-2px);
-        }
-        
-        /* Admin Content */
-        .admin-content {
-            padding: 30px;
-        }
-        
-        .stats-container {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-card {
-            flex: 1;
-            min-width: 200px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        .stat-card h3 {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .stat-pending {
-            color: #FFD700;
-        }
-        
-        .stat-verified {
-            color: #4CAF50;
-        }
-        
-        /* Animated Table */
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .transactions-table th {
-            background: linear-gradient(to right, #e21313, #e82c0c);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            position: sticky;
-            top: 0;
-        }
-        
-        .transactions-table td {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.9);
-        }
-        
-        .transactions-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .transactions-table tr {
-            transition: all 0.3s;
-        }
-        
-        .transactions-table tr:hover {
-            background-color: rgba(255,255,255,0.05);
-        }
-        
-        /* Status Badges with Pulse Animation */
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        .status-pending {
-            background-color: rgba(255, 215, 0, 0.2);
-            color: #FFD700;
-            animation: pulse 2s infinite;
-        }
-        
-        .status-verified {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
-        }
-        
-        /* Action Buttons */
-        .action-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .action-btn i {
-            font-size: 14px;
-        }
-        
-        .verify-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .verify-btn:hover {
-            background-color: #3e8e41;
-            transform: translateY(-2px);
-        }
-        
-        .delete-btn {
-            background-color: #e21313;
-            color: white;
-            margin-left: 8px;
-        }
-        
-        .delete-btn:hover {
-            background-color: #c91111;
-            transform: translateY(-2px);
-        }
-        
-        /* Notification System */
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 15px 30px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            z-index: 1000;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
-        .notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        .notification.success {
-            background: rgba(76, 175, 80, 0.9);
-            border-left: 5px solid #2E7D32;
-        }
-        
-        .notification.error {
-            background: rgba(244, 67, 54, 0.9);
-            border-left: 5px solid #c62828;
-        }
-        
-        .notification.warning {
-            background: rgba(255, 152, 0, 0.9);
-            border-left: 5px solid #E65100;
-        }
-        
-        /* Customer Notification Panel */
-        .customer-notification-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 350px;
-            max-width: 90%;
-            z-index: 1000;
-        }
-        
-        .customer-notification {
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transform: translateX(120%);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            backdrop-filter: blur(10px);
-            border-left: 5px solid #ff6600;
-        }
-        
-        .customer-notification.show {
-            transform: translateX(0);
-        }
-        
-        .customer-notification h4 {
-            margin-bottom: 8px;
-            color: #ff6600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .customer-notification p {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .customer-notification .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.6);
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #ff2e00, #ff6600);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s;
-        }
-        
-        .fab:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .transactions-table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .stat-card {
-                min-width: 100%;
-            }
-            
-            .admin-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .admin-actions {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        
-        /* Animated Text */
-        .animated-text {
-            background: linear-gradient(90deg, #ff6600, #ffcc00, #ff6600);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 3s linear infinite;
-            display: inline-block;
-        }
-        
-        @keyframes shine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-        
-        /* Loading Spinner */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Firebase Auth UI -->
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Gix Game Shop</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=W4zi-zyAaSmjPrE_Yo-ozvETWDqPKlq8yu2O7evYKdlWKaD_iDWbuPj4saLknaCl9XSfdCeNkOQDmH5qjHh8G5PVsFxRgNHwcNYCr402oIGSvHKWS-1mnnlBcXC1qq26phMAMH0TJee4JN8Oe55frqIVaEOwl5EJhdTma3t8u9KbGpvwlLMI-DSCQw48Qf9zF-GgpLGwX0rbKcsqrZWdSSGbTmfOItGH5KSucHln5dnAsYXxUR4WxoTjDrtyTxaxE8Q9M0KDDrxhfE4ZB-8dRA" charset="UTF-8"></script><style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #ffffff;
+      background-color: #000000;
+    }
+
+    /* Red Firefly Animation */
+    .firefly {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      box-shadow: 0 0 10px 2px #ff0000;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      animation: firefly-twinkle 6s infinite ease-in-out;
+    }
+
+    @keyframes firefly-twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      20%, 80% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px 3px #ff0000;
+      }
+    }
+
+    /* Content Box Styling */
+    .content-box {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      border: 1px solid #ff3333;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Sliding Navigation Bar */
+    .sliding-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-bottom: 1px solid #ff3333;
+    }
+
+    .sliding-nav.show {
+      transform: translateY(0);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ff3333;
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .banner {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      padding: 20px;
+      color: #ffffff;
+      margin-top: 60px;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #ff3333;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      flex-wrap: wrap;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      border: 1px solid #ff3333;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .logo img {
+      height: 40px;
+      filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5));
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #00ff00;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #00ff00;
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .announcement-box {
+      flex-grow: 1;
+      margin: 0 20px;
+      padding: 8px 15px;
+      background-color: rgba(255, 51, 51, 0.2);
+      border-radius: 8px;
+      border: 1px solid #ff3333;
+      font-size: 14px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification-icon {
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      color: #ffffff;
+    }
+
+    .notification-icon::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: #ff3333;
+      border-radius: 50%;
+      position: absolute;
+      top: -2px;
+      right: -2px;
+    }
+
+    .auth-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-btn {
+      background-color: rgba(255, 51, 51, 0.2);
+      color: #ffffff;
+      border: 1px solid #ff3333;
+    }
+
+    .login-btn:hover {
+      background-color: rgba(255, 51, 51, 0.3);
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+    }
+
+    .profile-btn {
+      background-color: #ff3333;
+      color: #ffffff;
+      border: 1px solid #ff3333;
+    }
+
+    .profile-btn:hover {
+      background-color: #ff5555;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+    }
+
+    .admin-panel-btn {
+      background-color: #3333ff;
+      color: #ffffff;
+      border: 1px solid #3333ff;
+    }
+
+    .admin-panel-btn:hover {
+      background-color: #5555ff;
+      box-shadow: 0 0 15px rgba(51, 51, 255, 0.5);
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 15px;
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      border: 1px solid #ff3333;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 28px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      color: #ffffff;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff3333, #ffffff);
+      border-radius: 3px;
+    }
+
+    /* Admin specific styles */
+    .admin-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .control-group {
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #3333ff;
+    }
+
+    .control-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .control-title i {
+      color: #3333ff;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: rgba(30, 30, 30, 0.9);
+      border: 1px solid #ff3333;
+      color: white;
+      font-size: 16px;
+      min-height: 100px;
+      resize: vertical;
+      margin-bottom: 15px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #3333ff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #5555ff;
+      box-shadow: 0 0 15px rgba(51, 51, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background-color: rgba(255, 51, 51, 0.2);
+      color: white;
+      border: 1px solid #ff3333;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 51, 51, 0.3);
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+    }
+
+    .current-announcement {
+      background-color: rgba(30, 30, 30, 0.9);
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #00ff00;
+      margin-bottom: 20px;
+    }
+
+    .current-announcement h4 {
+      color: #00ff00;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .current-announcement p {
+      color: #ffffff;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 20px;
+        gap: 15px;
+        border-top: 1px solid #ff3333;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .banner {
+        margin-top: 80px;
+      }
+      
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .logo img {
+        height: 30px;
+      }
+      
+      .announcement-box {
+        margin: 10px 0;
+        order: 3;
+        width: 100%;
+      }
+      
+      .status-indicator {
+        order: 2;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
+      authDomain: "gixgame.firebaseapp.com",
+      databaseURL: "https://gixgame-default-rtdb.firebaseio.com",
+      projectId: "gixgame",
+      storageBucket: "gixgame.firebasestorage.app",
+      messagingSenderId: "808321553860",
+      appId: "1:808321553860:web:d95a7bcab2b3af49308091"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    // Admin emails - only these emails can access this panel
+    const adminEmails = ["workonline.mahmud@gmail.com", "joyjehad28@gmail.com"];
+
+    // Check if user is admin
+    onAuthStateChanged(auth, (user) => {
+      if (!user || !adminEmails.includes(user.email)) {
+        // Redirect to home page if not admin
+        window.location.href = "index.html";
+      } else {
+        // Load current announcement
+        loadAnnouncement();
+      }
+    });
+
+    // Load current announcement
+    function loadAnnouncement() {
+      const announcementRef = ref(database, 'announcement');
+      onValue(announcementRef, (snapshot) => {
+        const data = snapshot.val();
+        const announcementText = data ? data.text : "No announcement currently set";
+        document.getElementById('currentAnnouncement').textContent = announcementText;
+        document.getElementById('announcementInput').value = announcementText || "";
+      });
+    }
+
+    // Update announcement
+    window.updateAnnouncement = function() {
+      const newAnnouncement = document.getElementById('announcementInput').value.trim();
+      if (newAnnouncement) {
+        set(ref(database, 'announcement'), {
+          text: newAnnouncement,
+          timestamp: Date.now()
+        }).then(() => {
+          alert("Announcement updated successfully!");
+          loadAnnouncement();
+        }).catch((error) => {
+          alert("Error updating announcement: " + error.message);
+        });
+      } else {
+        alert("Please enter an announcement text");
+      }
+    };
+
+    // Clear announcement
+    window.clearAnnouncement = function() {
+      if (confirm("Are you sure you want to clear the current announcement?")) {
+        set(ref(database, 'announcement'), null).then(() => {
+          alert("Announcement cleared successfully!");
+          loadAnnouncement();
+          document.getElementById('announcementInput').value = "";
+        }).catch((error) => {
+          alert("Error clearing announcement: " + error.message);
+        });
+      }
+    };
+
+    // Logout function
+    window.logout = function() {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      }).catch((error) => {
+        alert("Error signing out: " + error.message);
+      });
+    };
+  </script>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: rgba(0,0,0,0.8); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 2000; backdrop-filter: blur(10px);">
-        <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 15px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);">
-            <h1 style="margin-bottom: 30px; color: white; font-size: 28px;"><span class="animated-text">Ginipay Admin</span></h1>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 30px;">Sign in to access the payment administration panel</p>
-            <div id="firebaseui-auth-container"></div>
-            <div style="margin-top: 20px; color: rgba(255,255,255,0.6); font-size: 12px;">
-                <i class="fas fa-lock"></i> Your data is securely encrypted
-            </div>
-        </div>
+  <!-- Red Fireflies will be added by JavaScript -->
+  
+  <!-- Sliding Navigation Bar -->
+  <nav class="sliding-nav" id="slidingNav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-gamepad"></i>
+        <span>GixGameShop - Admin Panel</span>
+      </div>
+      <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="admin.html"><i class="fas fa-cog"></i> Admin Panel</a>
+        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div class="banner content-box">Admin Control Panel</div>
+
+    <div class="header content-box">
+      <div class="logo">
+        <i class="fas fa-cog"></i>
+        <img src="logo.png" alt="Gix Game Shop Logo">
+      </div>
+      
+      <div class="status-indicator">
+        <span>Admin Mode Active</span>
+        <div class="status-dot"></div>
+      </div>
+      
+      <div class="announcement-box" id="currentAnnouncement">
+        Loading current announcement...
+      </div>
+      
+      <div class="auth-buttons">
+        <button class="auth-btn profile-btn" onclick="window.location.href='profile.html'">
+          <i class="fas fa-user"></i> Profile
+        </button>
+        <button class="auth-btn admin-panel-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
     </div>
 
-    <!-- Main Admin Panel (hidden initially) -->
-    <div id="adminPanel" style="display: none;">
-        <div class="main-container">
-            <!-- Admin Header -->
-            <div class="admin-header">
-                <h1><i class="fas fa-fire"></i> <span class="animated-text">Ginipay</span> Admin Dashboard</h1>
-                <div class="admin-actions">
-                    <button class="admin-btn refresh-btn" id="refreshBtn">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </button>
-                    <button class="admin-btn clear-btn" id="clearBtn">
-                        <i class="fas fa-trash"></i> Clear All
-                    </button>
-                    <button class="google-signin" id="signOutBtn">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 18px; height: 18px;">
-                        Sign Out
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Admin Content -->
-            <div class="admin-content">
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <h3>Total Transactions</h3>
-                        <div class="stat-value" id="totalTransactions">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Pending</h3>
-                        <div class="stat-value stat-pending" id="pendingTransactions">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Verified</h3>
-                        <div class="stat-value stat-verified" id="verifiedTransactions">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Amount</h3>
-                        <div class="stat-value">৳<span id="totalAmount">0</span></div>
-                    </div>
-                </div>
-                
-                <table class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Transaction ID</th>
-                            <th>Method</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsBody">
-                        <!-- Transactions will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
+    <div class="container content-box">
+      <h2><i class="fas fa-bullhorn"></i> Announcement Control</h2>
+      
+      <div class="admin-controls">
+        <div class="control-group">
+          <div class="control-title">
+            <i class="fas fa-info-circle"></i>
+            <span>Current Announcement</span>
+          </div>
+          <div class="current-announcement">
+            <h4><i class="fas fa-check-circle"></i> Active Announcement</h4>
+            <p id="currentAnnouncementContent">Loading...</p>
+          </div>
         </div>
         
-        <!-- Notification -->
-        <div class="notification" id="notification"></div>
-        
-        <!-- Customer Notification Panel -->
-        <div class="customer-notification-panel" id="customerNotificationPanel">
-            <!-- Customer notifications will appear here -->
+        <div class="control-group">
+          <div class="control-title">
+            <i class="fas fa-edit"></i>
+            <span>Update Announcement</span>
+          </div>
+          <textarea id="announcementInput" placeholder="Enter your announcement text here..."></textarea>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="clearAnnouncement()">
+              <i class="fas fa-trash-alt"></i> Clear
+            </button>
+            <button class="btn btn-primary" onclick="updateAnnouncement()">
+              <i class="fas fa-save"></i> Update
+            </button>
+          </div>
         </div>
-        
-        <!-- Floating Action Button -->
-        <div class="fab" id="notifyCustomerBtn" title="Notify Customer">
-            <i class="fas fa-bell"></i>
-        </div>
+      </div>
     </div>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+  </div>
+
+  <script>
+    // Sliding Navigation Logic
+    const slidingNav = document.getElementById('slidingNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // Show nav after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        slidingNav.classList.add('show');
+      }, 500);
+    });
+
+    // Toggle mobile menu
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    // Create red fireflies (লাল আগুনের ফুলকি)
+    function createFireflies() {
+      const colors = [
+        '#ff3333', // Bright red
+        '#ff5555', // Lighter red
+        '#ff0000'  // Pure red
+      ];
+      
+      for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
         
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        // Random position
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 100}%`;
         
-        // Initialize Firebase UI
-        const ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // Random animation properties
+        const duration = 4 + Math.random() * 4;
+        const delay = Math.random() * 8;
+        const size = 3 + Math.random() * 3;
         
-        // UI Config
-        const uiConfig = {
-            signInSuccessUrl: '#',
-            signInOptions: [
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                {
-                    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                    requireDisplayName: false
-                }
-            ],
-            tosUrl: '#',
-            privacyPolicyUrl: '#',
-            signInFlow: 'popup',
-            callbacks: {
-                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                    // User successfully signed in
-                    handleSignedInUser(authResult.user);
-                    return false; // Avoid redirect
-                }
-            }
-        };
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         
-        // Start Firebase UI
-        ui.start('#firebaseui-auth-container', uiConfig);
-        
-        // Handle Auth State Changes
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                handleSignedInUser(user);
-            } else {
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('adminPanel').style.display = 'none';
-            }
-        });
-        
-        // Sign Out Button
-        document.getElementById('signOutBtn').addEventListener('click', function() {
-            firebase.auth().signOut().then(() => {
-                showNotification('Successfully signed out', 'success');
-            }).catch((error) => {
-                showNotification('Sign out error: ' + error.message, 'error');
-            });
-        });
-        
-        // Handle Signed In User
-        function handleSignedInUser(user) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            
-            // Apply swipe animation
-            document.querySelector('.main-container').classList.add('swipe-in');
-            
-            // Show welcome notification
-            showNotification('Welcome, ' + user.displayName + '!', 'success');
-            
-            // Load transactions
-            loadTransactions();
-        }
-        
-        // Database simulation (fallback if Firebase not configured)
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        
-        // DOM Elements
-        const notification = document.getElementById('notification');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const totalTransactionsEl = document.getElementById('totalTransactions');
-        const pendingTransactionsEl = document.getElementById('pendingTransactions');
-        const verifiedTransactionsEl = document.getElementById('verifiedTransactions');
-        const totalAmountEl = document.getElementById('totalAmount');
-        const notifyCustomerBtn = document.getElementById('notifyCustomerBtn');
-        const customerNotificationPanel = document.getElementById('customerNotificationPanel');
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generate some demo transactions if none exist
-            if (transactions.length === 0) {
-                generateDemoTransactions();
-            }
-            
-            // Add event listeners
-            notifyCustomerBtn.addEventListener('click', showCustomerNotificationForm);
-        });
-        
-        // Generate Demo Transactions
-        function generateDemoTransactions() {
-            const methods = ['Bkash', 'Nagad', 'Rocket', 'Upay', 'Visa', 'Mastercard'];
-            const statuses = ['pending', 'verified'];
-            const games = ['Blood Strike', 'Genshin Impact', 'Mobile Legends', 'Wuthering Waves'];
-            
-            for (let i = 1; i <= 10; i++) {
-                transactions.push({
-                    id: i,
-                    transactionId: 'GIN' + Math.floor(100000 + Math.random() * 900000),
-                    method: methods[Math.floor(Math.random() * methods.length)],
-                    amount: Math.floor(100 + Math.random() * 900),
-                    game: games[Math.floor(Math.random() * games.length)],
-                    date: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)).toISOString(),
-                    status: statuses[Math.floor(Math.random() * statuses.length)],
-                    customer: {
-                        name: 'Customer ' + i,
-                        email: 'customer' + i + '@example.com',
-                        phone: '01' + Math.floor(100000000 + Math.random() * 900000000)
-                    }
-                });
-            }
-            
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-        }
-        
-        // Admin Panel Functions
-        function loadTransactions() {
-            const tbody = document.getElementById('transactionsBody');
-            tbody.innerHTML = '';
-            
-            if (transactions.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: rgba(255,255,255,0.7);">No transactions found</td></tr>';
-                updateStats();
-                return;
-            }
-            
-            // Sort by date (newest first)
-            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            sortedTransactions.forEach(transaction => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${transaction.id}</td>
-                    <td>${transaction.transactionId}</td>
-                    <td>${transaction.method}</td>
-                    <td>৳${transaction.amount}</td>
-                    <td>${formatDate(transaction.date)}</td>
-                    <td><span class="status-badge status-${transaction.status}">${transaction.status}</span></td>
-                    <td>
-                        ${transaction.status === 'pending' ? 
-                          `<button class="action-btn verify-btn" data-id="${transaction.id}">
-                              <i class="fas fa-check"></i> Verify
-                           </button>` : 
-                          '<i class="fas fa-check-circle" style="color: #4CAF50;"></i> Verified'}
-                        <button class="action-btn delete-btn" data-id="${transaction.id}">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                        <button class="action-btn" style="background: #2196F3;" data-id="${transaction.id}" onclick="notifyCustomer(${transaction.id})">
-                            <i class="fas fa-bell"></i> Notify
-                        </button>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-            
-            // Add event listeners to action buttons
-            document.querySelectorAll('.verify-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = parseInt(this.dataset.id);
-                    verifyTransaction(id);
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = parseInt(this.dataset.id);
-                    deleteTransaction(id);
-                });
-            });
-            
-            updateStats();
-        }
-        
-        function verifyTransaction(id) {
-            const index = transactions.findIndex(t => t.id === id);
-            if (index !== -1) {
-                transactions[index].status = 'verified';
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                loadTransactions();
-                showNotification('Transaction verified successfully!', 'success');
-                
-                // Notify customer automatically
-                notifyCustomer(id, 'verified');
-            }
-        }
-        
-        function deleteTransaction(id) {
-            if (confirm('Are you sure you want to delete this transaction?')) {
-                transactions = transactions.filter(t => t.id !== id);
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                loadTransactions();
-                showNotification('Transaction deleted successfully!', 'success');
-            }
-        }
-        
-        function updateStats() {
-            totalTransactionsEl.textContent = transactions.length;
-            pendingTransactionsEl.textContent = transactions.filter(t => t.status === 'pending').length;
-            verifiedTransactionsEl.textContent = transactions.filter(t => t.status === 'verified').length;
-            
-            // Calculate total amount
-            const totalAmount = transactions.reduce((sum, t) => sum + t.amount, 0);
-            totalAmountEl.textContent = totalAmount.toLocaleString();
-        }
-        
-        // Clear All Transactions
-        clearBtn.addEventListener('click', function() {
-            if (confirm('Are you sure you want to clear ALL transactions? This cannot be undone.')) {
-                transactions = [];
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                loadTransactions();
-                showNotification('All transactions cleared!', 'success');
-            }
-        });
-        
-        // Refresh Button
-        refreshBtn.addEventListener('click', function() {
-            this.innerHTML = '<i class="fas fa-sync-alt spinner"></i> Refreshing';
-            setTimeout(() => {
-                loadTransactions();
-                this.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
-                showNotification('Transactions refreshed!', 'success');
-            }, 1000);
-        });
-        
-        // Notification System
-        function showNotification(message, type) {
-            const notif = document.getElementById('notification');
-            notif.textContent = message;
-            notif.className = `notification ${type}`;
-            notif.classList.add('show');
-            
-            setTimeout(() => {
-                notif.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Customer Notification System
-        function notifyCustomer(transactionId, type = 'custom') {
-            const transaction = transactions.find(t => t.id === transactionId);
-            if (!transaction) return;
-            
-            let title, message;
-            
-            if (type === 'verified') {
-                title = 'Payment Verified';
-                message = `Your payment of ৳${transaction.amount} for ${transaction.game} has been verified. Thank you!`;
-            } else {
-                // For custom notifications
-                title = 'Payment Update';
-                message = prompt('Enter notification message for customer:');
-                if (!message) return;
-            }
-            
-            // Create notification element
-            const notif = document.createElement('div');
-            notif.className = 'customer-notification';
-            notif.innerHTML = `
-                <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
-                <h4><i class="fas fa-bell"></i> ${title}</h4>
-                <p>${message}</p>
-                <p style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.6);">
-                    Sent to: ${transaction.customer.email} | ${transaction.customer.phone}
-                </p>
-            `;
-            
-            // Add to panel
-            customerNotificationPanel.insertBefore(notif, customerNotificationPanel.firstChild);
-            
-            // Show with animation
-            setTimeout(() => {
-                notif.classList.add('show');
-            }, 100);
-            
-            // Auto-remove after 10 seconds
-            setTimeout(() => {
-                notif.classList.remove('show');
-                setTimeout(() => {
-                    notif.remove();
-                }, 500);
-            }, 10000);
-            
-            showNotification('Notification sent to customer!', 'success');
-        }
-        
-        // Show Customer Notification Form
-        function showCustomerNotificationForm() {
-            const transactionId = prompt('Enter Transaction ID to notify customer:');
-            if (transactionId) {
-                const id = parseInt(transactionId);
-                if (!isNaN(id)) {
-                    notifyCustomer(id);
-                } else {
-                    showNotification('Invalid Transaction ID', 'error');
-                }
-            }
-        }
-        
-        // Helper Functions
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString();
-        }
-    </script>
+        document.body.appendChild(firefly);
+      }
+    }
+
+    // Initialize animations when page loads
+    window.addEventListener('load', () => {
+      createFireflies();
+    });
+  </script>
 </body>
 </html>
