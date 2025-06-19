@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genshin Impact - Genesis Crystals</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=X9kh8Nk9KHsS0HlTOKdqFVComyVqJrZdGONDRgVYJ94O5kz3pFWGftQX68AlXUfi8Hqjd2l3N5fkGxItPV-knRBkisPEjWiQ-WmR5ED_2ti7dxGfhXccPzPS0NC_8RZ5Vq5rXUC41RY76niT1E8P3Dw9fyltNQdxH7b62TtrtQW9zef1uu7f7_Yj2GzqV6icUcUpaM4MVbc97OZsT5eF8QAUYHplWa-z-zQKtD56wC9xlJEqqA1h9BQFhF62azRry0_3abSZevgy4WsnyjhH4A" charset="UTF-8"></script><style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #ffffff;
+      background-color: #000000;
+    }
+
+    /* Red Firefly Animation */
+    .firefly {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      box-shadow: 0 0 10px 2px #ff0000;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      animation: firefly-twinkle 6s infinite ease-in-out;
+    }
+
+    @keyframes firefly-twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      20%, 80% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px 3px #ff0000;
+      }
+    }
+
+    /* Content Box Styling */
+    .content-box {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      border: 1px solid #ff3333;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    /* Banner Style */
+    .banner {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      padding: 20px;
+      color: #ffffff;
+      margin-top: 60px;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #ff3333;
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 28px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      color: #ffffff;
+    }
+
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff3333, #ffffff);
+      border-radius: 3px;
+    }
+
+    /* Packages Grid */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .package-card {
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #ff3333;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .package-card:hover {
+      transform: translateY(-5px);
+      border: 1px solid #ff5555;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .package-card .crystal-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff9a00;
+      margin-bottom: 10px;
+    }
+
+    .package-card .price {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .package-card.selected {
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+
+    /* Limited Time Badge */
+    .limited-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff3333;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Special Package (Welkin Moon) */
+    .special-card {
+      background-color: rgba(255, 215, 0, 0.1);
+      border: 1px solid #ffd700;
+    }
+
+    .special-card:hover {
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .special-card .crystal-amount {
+      color: #ffd700;
+    }
+
+    /* Floating Add to Cart Button */
+    .floating-cart-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 0;
+      padding: 12px 24px;
+      min-width: 180px;
+      text-align: center;
+      line-height: 24px;
+      font-weight: 600;
+      font-size: 16px;
+      background: #ff3333;
+      outline: none;
+      color: white;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .floating-cart-btn.blink {
+      animation: blink 0.5s 3;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Cart Counter */
+    .cart-counter {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .cart-counter.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .cart-counter .count {
+      background: #ff3333;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Crystal Animation */
+    .crystal-animation {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s;
+      filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.8));
+    }
+
+    .crystal-animation.visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .package-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-cart-btn {
+        min-width: 150px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      
+      .crystal-animation {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Red Fireflies will be added by JavaScript -->
+  
+  <div class="main-container">
+    <div class="banner content-box">Genshin Impact Genesis Crystals</div>
+
+    <div class="content-box">
+      <h2 class="section-header"><i class="fas fa-gem"></i> Genesis Crystals</h2>
+      <div class="package-grid">
+        <div class="package-card" data-amount="60" data-price="140" data-name="60 Genesis Crystals">
+          <div class="crystal-amount">60 Genesis Crystals</div>
+          <div class="price">140 Taka</div>
+        </div>
+        <div class="package-card" data-amount="330" data-price="540" data-name="330 Genesis Crystals">
+          <div class="crystal-amount">330 Genesis Crystals</div>
+          <div class="price">540 Taka</div>
+        </div>
+        <div class="package-card" data-amount="1090" data-price="1620" data-name="1090 Genesis Crystals">
+          <div class="crystal-amount">1090 Genesis Crystals</div>
+          <div class="price">1620 Taka</div>
+        </div>
+        <div class="package-card" data-amount="2240" data-price="3340" data-name="2240 Genesis Crystals">
+          <div class="limited-badge">Popular</div>
+          <div class="crystal-amount">2240 Genesis Crystals</div>
+          <div class="price">3340 Taka</div>
+        </div>
+        <div class="package-card" data-amount="3880" data-price="5100" data-name="3880 Genesis Crystals">
+          <div class="crystal-amount">3880 Genesis Crystals</div>
+          <div class="price">5100 Taka</div>
+        </div>
+        <div class="package-card" data-amount="8080" data-price="10300" data-name="8080 Genesis Crystals">
+          <div class="limited-badge">Best Value</div>
+          <div class="crystal-amount">8080 Genesis Crystals</div>
+          <div class="price">10300 Taka</div>
+        </div>
+      </div>
+
+      <h2 class="section-header"><i class="fas fa-moon"></i> Blessing of the Welkin Moon</h2>
+      <div class="package-grid">
+        <div class="package-card special-card" data-amount="welkin" data-price="550" data-name="Blessing of the Welkin Moon">
+          <div class="crystal-amount">Blessing of the Welkin Moon</div>
+          <div class="price">550 Taka</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Add to Cart Button -->
+  <button class="floating-cart-btn" id="floatingCartBtn">
+    <i class="fas fa-shopping-cart"></i> Add to Cart
+  </button>
+
+  <!-- Cart Counter -->
+  <div class="cart-counter" id="cartCounter">
+    <span>Items in cart:</span>
+    <span class="count" id="cartCount">0</span>
+  </div>
+
+  <!-- Crystal Animation -->
+  <div class="crystal-animation" id="crystalAnimation">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,2L4,12L12,22L20,12L12,2M12,4L18,12L12,20L6,12L12,4Z" />
+    </svg>
+  </div>
+
+  <script>
+    // Create red fireflies
+    function createFireflies() {
+      const colors = [
+        '#ff3333', // Bright red
+        '#ff5555', // Lighter red
+        '#ff0000'  // Pure red
+      ];
+      
+      for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        
+        // Random position
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation properties
+        const duration = 4 + Math.random() * 4;
+        const delay = Math.random() * 8;
+        const size = 3 + Math.random() * 3;
+        
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(firefly);
+      }
+    }
+
+    // Package Selection Logic
+    const packageCards = document.querySelectorAll('.package-card');
+    const floatingCartBtn = document.getElementById('floatingCartBtn');
+    const cartCounter = document.getElementById('cartCounter');
+    const cartCount = document.getElementById('cartCount');
+    const crystalAnimation = document.getElementById('crystalAnimation');
+    let selectedPackage = null;
+    let cartItems = 0;
+
+    packageCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selected class from all cards
+        packageCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        card.classList.add('selected');
+        selectedPackage = {
+          amount: card.dataset.amount,
+          price: card.dataset.price,
+          name: card.dataset.name
+        };
+        
+        // Make the floating cart button blink
+        floatingCartBtn.classList.add('blink');
+        setTimeout(() => {
+          floatingCartBtn.classList.remove('blink');
+        }, 1500);
+        
+        // Animate crystal to cart
+        animateCrystalToCart();
+        
+        // Increment cart counter
+        cartItems++;
+        cartCount.textContent = cartItems;
+        
+        // Show cart counter
+        cartCounter.classList.add('show');
+        setTimeout(() => {
+          cartCounter.classList.remove('show');
+        }, 2000);
+      });
+    });
+
+    // Floating Add to Cart Button
+    floatingCartBtn.addEventListener('click', () => {
+      if(!selectedPackage) {
+        alert('Please select a package first!');
+        return;
+      }
+      
+      alert(`You selected: ${selectedPackage.name}\nPrice: ${selectedPackage.price} Taka`);
+      // Here you would typically proceed to payment
+    });
+
+    function animateCrystalToCart() {
+      // Get position of selected package
+      const selectedCard = document.querySelector('.package-card.selected');
+      const cardRect = selectedCard.getBoundingClientRect();
+      const startX = cardRect.left + cardRect.width/2;
+      const startY = cardRect.top + cardRect.height/2;
+      
+      // Get position of cart counter
+      const cartRect = cartCounter.getBoundingClientRect();
+      const endX = cartRect.left + cartRect.width/2;
+      const endY = cartRect.top + cartRect.height/2;
+      
+      // Set crystal starting position
+      crystalAnimation.style.left = `${startX}px`;
+      crystalAnimation.style.top = `${startY}px`;
+      crystalAnimation.classList.add('visible');
+      
+      // Animate crystal to cart
+      const duration = 1; // seconds
+      const size = 60;
+      
+      crystalAnimation.animate([
+        { left: `${startX}px`, top: `${startY}px`, opacity: 1 },
+        { left: `${endX}px`, top: `${endY}px`, opacity: 0 }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+      
+      // Add rotation effect
+      crystalAnimation.animate([
+        { transform: 'rotate(0deg)' },
+        { transform: 'rotate(360deg)' }
+      ], {
+        duration: duration * 1000,
+        easing: "linear"
+      });
+      
+      // Add scaling effect
+      crystalAnimation.animate([
+        { width: `${size}px`, height: `${size}px` },
+        { width: `${size * 1.5}px`, height: `${size * 1.5}px` },
+        { width: `${size}px`, height: `${size}px` },
+        { width: `${size * 1.5}px`, height: `${size * 1.5}px` },
+        { width: `${size}px`, height: `${size}px` }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-in-out"
+      });
+      
+      // Hide after animation
+      setTimeout(() => {
+        crystalAnimation.classList.remove('visible');
+      }, duration * 1000);
+    }
+
+    // Initialize animations when page loads
+    window.addEventListener('load', () => {
+      createFireflies();
+    });
+  </script>
+</body>
+</html>
