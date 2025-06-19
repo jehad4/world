@@ -169,6 +169,11 @@
       color: #ffffff;
     }
 
+    .logo img {
+      height: 40px;
+      filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5));
+    }
+
     .auth-buttons {
       display: flex;
       align-items: center;
@@ -306,23 +311,6 @@
       color: #ffffff;
     }
 
-    .footer-logo {
-      text-align: center;
-      margin-top: 50px;
-      padding: 20px;
-      background-color: rgba(10, 10, 10, 0.9);
-      border-radius: 10px;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      border: 1px solid #ff3333;
-    }
-
-    .footer-logo img {
-      width: 100px;
-      filter: drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
-    }
-
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -352,6 +340,10 @@
       .header {
         flex-direction: column;
         gap: 15px;
+      }
+      
+      .logo img {
+        height: 30px;
       }
     }
   </style>
@@ -419,16 +411,14 @@
       </div>
     </div>
   </nav>
- <div class="footer-logo">
-      <img src="logo.png" alt="Logo">
-    </div>
+
   <div class="main-container">
     <div class="banner content-box">Welcome to Gix Game Shop</div>
 
     <div class="header content-box">
       <div class="logo">
-        <i class="fas fa-gamepad"></i>
-        GameTopUp
+        
+        <img src="logo.png" alt="Gix Game Shop Logo">
       </div>
       <div class="auth-buttons">
         <div class="notification-icon" title="Notifications">
@@ -488,8 +478,6 @@
         </div>
       </div>
     </div>
-
-   
   </div>
 
   <script>
