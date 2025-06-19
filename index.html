@@ -174,6 +174,41 @@
       filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5));
     }
 
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #00ff00;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #00ff00;
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .announcement-box {
+      flex-grow: 1;
+      margin: 0 20px;
+      padding: 8px 15px;
+      background-color: rgba(255, 51, 51, 0.2);
+      border-radius: 8px;
+      border: 1px solid #ff3333;
+      font-size: 14px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
     .auth-buttons {
       display: flex;
       align-items: center;
@@ -230,6 +265,17 @@
     .profile-btn:hover {
       background-color: #ff5555;
       box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+    }
+
+    .admin-panel-btn {
+      background-color: #3333ff;
+      color: #ffffff;
+      border: 1px solid #3333ff;
+    }
+
+    .admin-panel-btn:hover {
+      background-color: #5555ff;
+      box-shadow: 0 0 15px rgba(51, 51, 255, 0.5);
     }
 
     .main-container {
@@ -345,6 +391,16 @@
       .logo img {
         height: 30px;
       }
+      
+      .announcement-box {
+        margin: 10px 0;
+        order: 3;
+        width: 100%;
+      }
+      
+      .status-indicator {
+        order: 2;
+      }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -352,6 +408,7 @@
     // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
@@ -366,11 +423,20 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
+    const database = getDatabase(app);
+
+    // Admin emails
+    const adminEmails = ["workonline.mahmud@gmail.com", "joyjehad28@gmail.com"];
 
     window.googleLogin = function () {
       signInWithPopup(auth, provider)
         .then(result => {
-          window.location.href = "profile.html";
+          const user = result.user;
+          if (adminEmails.includes(user.email)) {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = "profile.html";
+          }
         })
         .catch(error => {
           alert("Login Failed: " + error.message);
@@ -382,11 +448,31 @@
       if (user) {
         document.getElementById("loginBtn").style.display = "none";
         document.getElementById("profileBtn").style.display = "flex";
+        
+        if (adminEmails.includes(user.email)) {
+          document.getElementById("adminPanelBtn").style.display = "flex";
+        } else {
+          document.getElementById("adminPanelBtn").style.display = "none";
+        }
       } else {
         document.getElementById("loginBtn").style.display = "flex";
         document.getElementById("profileBtn").style.display = "none";
+        document.getElementById("adminPanelBtn").style.display = "none";
       }
     });
+
+    // Load announcement from Firebase
+    function loadAnnouncement() {
+      const announcementRef = ref(database, 'announcement');
+      onValue(announcementRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          document.getElementById('announcementBox').textContent = data.text;
+        } else {
+          document.getElementById('announcementBox').textContent = "Welcome to Gix Game Shop!";
+        }
+      });
+    }
   </script>
 </head>
 <body>
@@ -417,15 +503,28 @@
 
     <div class="header content-box">
       <div class="logo">
-        
+        <i class="fas fa-gamepad"></i>
         <img src="logo.png" alt="Gix Game Shop Logo">
       </div>
+      
+      <div class="status-indicator">
+        <span>Active Now</span>
+        <div class="status-dot"></div>
+      </div>
+      
+      <div class="announcement-box" id="announcementBox">
+        Loading announcement...
+      </div>
+      
       <div class="auth-buttons">
         <div class="notification-icon" title="Notifications">
           <i class="fas fa-bell"></i>
         </div>
         <button class="auth-btn login-btn" id="loginBtn" onclick="googleLogin()">
           Sign in with Google
+        </button>
+        <button class="auth-btn admin-panel-btn" id="adminPanelBtn" onclick="window.location.href='admin.html'" style="display: none;">
+          <i class="fas fa-cog"></i> Admin
         </button>
         <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
           <i class="fas fa-user"></i> Profile
@@ -491,6 +590,9 @@
       setTimeout(() => {
         slidingNav.classList.add('show');
       }, 500);
+      
+      // Load announcement
+      loadAnnouncement();
     });
 
     // Toggle mobile menu
