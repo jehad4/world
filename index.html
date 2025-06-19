@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -444,19 +444,46 @@
     <div class="container content-box">
       <h2>🎮 Select a Game</h2>
       <div class="card-grid">
-        <div class="card" onclick="selectCard(this)"><img src="img/bloodstrike.png" alt="Blood Strike"><div>Blood Strike</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/racingmaster.png" alt="Racing Master"><div>Racing Master</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/genshin.png" alt="Genshin"><div>Genshin Impact</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/deltaforce.png" alt="Delta Force"><div>Delta Force</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/honkai.png" alt="Honkai"><div>Honkai Star Rail</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/mlbb.png" alt="MLBB"><div>Mobile Legends</div></div>
+        <div class="card" onclick="window.location.href='productlist/bloodstrike.html'">
+          <img src="img/bloodstrike.png" alt="Blood Strike">
+          <div>Blood Strike</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/rm.html'">
+          <img src="img/racingmaster.png" alt="Racing Master">
+          <div>Racing Master</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/gi.html'">
+          <img src="img/genshin.png" alt="Genshin">
+          <div>Genshin Impact</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/df.html'">
+          <img src="img/deltaforce.png" alt="Delta Force">
+          <div>Delta Force</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/honkai.html'">
+          <img src="img/honkai.png" alt="Honkai">
+          <div>Honkai Star Rail</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/mlbb.html'">
+          <img src="img/mlbb.png" alt="MLBB">
+          <div>Mobile Legends</div>
+        </div>
       </div>
 
       <h2>📺 Subscriptions</h2>
       <div class="card-grid">
-        <div class="card" onclick="selectCard(this)"><img src="img/netflix.png" alt="Netflix"><div>Netflix</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/prime.png" alt="Prime"><div>Amazon Prime</div></div>
-        <div class="card" onclick="selectCard(this)"><img src="img/crunchyroll.png" alt="Crunchyroll"><div>Crunchyroll</div></div>
+        <div class="card" onclick="window.location.href='productlist/netflix.html'">
+          <img src="img/netflix.png" alt="Netflix">
+          <div>Netflix</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/ap.html'">
+          <img src="img/prime.png" alt="Prime">
+          <div>Amazon Prime</div>
+        </div>
+        <div class="card" onclick="window.location.href='productlist/cr.html'">
+          <img src="img/crunchyroll.png" alt="Crunchyroll">
+          <div>Crunchyroll</div>
+        </div>
       </div>
     </div>
 
@@ -512,18 +539,6 @@
         
         document.body.appendChild(firefly);
       }
-    }
-
-    // Card selection logic
-    function selectCard(card) {
-      // Remove selected class from all cards in the same grid
-      const cardGrid = card.closest('.card-grid');
-      cardGrid.querySelectorAll('.card').forEach(c => {
-        c.classList.remove('selected');
-      });
-      
-      // Add selected class to clicked card
-      card.classList.add('selected');
     }
 
     // Initialize animations when page loads
