@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gold Packages - Gix Game Shop</title>
-  <style>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=b3nF92ZxBla7FeSVxnlVdUVgM5EF9QyvRgPMbEXbRuWz_nU23UYTq-BDCPKMGNBDprkjbT1YgLPIULxyBsNgZDkVTEwW1AwMsXxGGbGSRrpcqBvPAJfP1DCJ4Zhh8nvZMG4L4PmJ5zwbWSotNb0oAeVFdhdx6SM-KosoGCxq4HHmxLRZKB_VlkPv6cuhoziMzQ7o1Z3aqMyo-mJ_DYJ9__CzVVmrUMkx-n6HSWII7gPywvxB2X_OsFTPo6R71tuiVkyO8WE1fQklFerGMQaITg" charset="UTF-8"></script><style>
     * {
       margin: 0;
       padding: 0;
@@ -15,18 +15,78 @@
     body {
       min-height: 100vh;
       overflow-x: hidden;
-      color: #fff;
+      color: #ffffff;
+      background-color: #000;
     }
 
-    /* Background animation */
-    #backgroundCanvas {
+    /* Background elements */
+    .smoke-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .smoke {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 120, 120, 0.2); /* Changed to red smoke */
+      filter: blur(2px);
+      animation: smoke 20s infinite linear;
+    }
+
+    @keyframes smoke {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.2;
+      }
+      50% {
+        transform: translate(80px, -80px) scale(2);
+        opacity: 0.3;
+      }
+      100% {
+        transform: translate(160px, -160px) scale(3);
+        opacity: 0;
+      }
+    }
+
+    .firefly {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background-color: rgba(255, 100, 100, 0.6); /* Red fireflies */
+      filter: blur(0.5px);
+      pointer-events: none;
+      animation: firefly 15s infinite ease-in-out;
       z-index: -1;
-      background: linear-gradient(135deg, #ff2e00, #ff6600);
+      opacity: 0;
+    }
+
+    @keyframes firefly {
+      0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.4;
+      }
+      50% {
+        transform: translate(80px, 80px);
+        opacity: 0.6;
+      }
+      80% {
+        opacity: 0.3;
+      }
     }
 
     /* Sliding Navigation Bar */
@@ -40,6 +100,7 @@
       z-index: 1000;
       transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-bottom: 1px solid #ff3333; /* Red border */
     }
 
     .sliding-nav.show {
@@ -61,6 +122,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      color: #ffffff;
     }
 
     .nav-links {
@@ -83,7 +145,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: #ffcc00;
+      background: #ff3333; /* Red underline */
       transition: width 0.3s;
     }
 
@@ -105,15 +167,14 @@
       text-align: center;
       font-size: 26px;
       font-weight: bold;
-      padding: 15px;
-      color: #fff;
-      text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      color: #ffffff;
       margin: 60px auto 20px;
       max-width: 80%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(20, 20, 20, 0.8);
       border-radius: 15px;
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333; /* Red border */
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -121,8 +182,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px;
+      padding: 15px 20px;
       flex-wrap: wrap;
+      background: rgba(20, 20, 20, 0.8);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      border: 1px solid #ff3333; /* Red border */
     }
 
     .logo {
@@ -131,6 +197,7 @@
       gap: 10px;
       font-size: 24px;
       font-weight: bold;
+      color: #ffffff;
     }
 
     .auth-buttons {
@@ -143,13 +210,14 @@
       font-size: 20px;
       cursor: pointer;
       position: relative;
+      color: #ffffff;
     }
 
     .notification-icon::after {
       content: '';
       width: 8px;
       height: 8px;
-      background-color: red;
+      background-color: #ff3333;
       border-radius: 50%;
       position: absolute;
       top: -2px;
@@ -163,39 +231,43 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
-    }
-
-    .login-btn {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-
-    .login-btn:hover {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .profile-btn {
-      background-color: #ffcc00;
-      color: #333;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .login-btn {
+      background-color: rgba(255, 51, 51, 0.2); /* Red background */
+      color: #ffffff;
+      border: 1px solid #ff3333; /* Red border */
+    }
+
+    .login-btn:hover {
+      background-color: rgba(255, 51, 51, 0.3); /* Darker red */
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); /* Red glow */
+    }
+
+    .profile-btn {
+      background-color: #ff3333; /* Red background */
+      color: #ffffff;
+      border: 1px solid #ff3333; /* Red border */
+    }
+
     .profile-btn:hover {
-      background-color: #ffd633;
+      background-color: #ff5555; /* Lighter red */
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5); /* Red glow */
     }
 
     .container {
       max-width: 1200px;
       margin: auto;
       padding: 20px;
-      background-color: rgba(0, 0, 0, 0.3);
+      background: rgba(20, 20, 20, 0.8);
       border-radius: 15px;
       backdrop-filter: blur(6px);
       margin-top: 20px;
       margin-bottom: 80px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333; /* Red border */
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -208,10 +280,10 @@
       display: inline-block;
       width: 100%;
       padding: 15px 30px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(20, 20, 20, 0.8);
       border-radius: 15px;
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333; /* Red border */
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
@@ -223,7 +295,7 @@
       transform: translateX(-50%);
       width: 80px;
       height: 3px;
-      background: linear-gradient(90deg, #ff2e00, #ffcc00);
+      background: linear-gradient(90deg, #ff3333, #ffffff); /* Red to white gradient */
       border-radius: 3px;
     }
 
@@ -236,11 +308,11 @@
     }
 
     .package-card {
-      background-color: rgba(255, 255, 255, 0.1);
+      background: rgba(30, 30, 30, 0.9);
       border-radius: 10px;
       padding: 20px;
       transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333; /* Red border */
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -248,20 +320,20 @@
 
     .package-card:hover {
       transform: translateY(-5px);
-      background-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 20px rgba(255, 51, 51, 0.2); /* Red glow */
     }
 
     .package-card .gold-amount {
       font-size: 24px;
       font-weight: bold;
-      color: #ffcc00;
+      color: #ff3333; /* Red text */
       margin-bottom: 10px;
     }
 
     .package-card .price {
       font-size: 20px;
       font-weight: 600;
+      color: #ffffff;
     }
 
     .package-card .original-price {
@@ -271,7 +343,7 @@
     }
 
     .package-card .discount {
-      background-color: #ff2e00;
+      background-color: #ff3333; /* Red background */
       color: white;
       padding: 2px 8px;
       border-radius: 4px;
@@ -279,8 +351,8 @@
     }
 
     .package-card.selected {
-      border: 2px solid #ffcc00;
-      box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+      border: 2px solid #ffffff; /* White border when selected */
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.7); /* Strong red glow */
     }
 
     /* Limited Time Badge */
@@ -288,7 +360,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: #ff2e00;
+      background-color: #ff3333; /* Red background */
       color: white;
       padding: 3px 8px;
       border-radius: 4px;
@@ -319,13 +391,18 @@
       line-height: 24px;
       font-weight: 600;
       font-size: 16px;
-      background: #ff6600;
+      background: #ff3333; /* Red background */
       outline: none;
-      color: white;
+      color: #ffffff; /* White text */
       border-radius: 50px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       z-index: 1000;
       transition: all 0.3s;
+    }
+
+    .floating-cart-btn:hover {
+      background: #ff5555; /* Lighter red on hover */
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5); /* Red glow */
     }
 
     .floating-cart-btn.blink {
@@ -342,8 +419,8 @@
     }
 
     @keyframes orangeBlink {
-      0%, 100% { background-color: #ff6600; }
-      50% { background-color: #ff8c00; }
+      0%, 100% { background-color: #ff3333; }
+      50% { background-color: #ff5555; }
     }
 
     @keyframes shake {
@@ -357,7 +434,7 @@
       position: fixed;
       bottom: 90px;
       right: 30px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(20, 20, 20, 0.9);
       border-radius: 50px;
       padding: 10px 20px;
       display: flex;
@@ -366,7 +443,7 @@
       z-index: 1000;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #ff3333; /* Red border */
       transform: translateY(20px);
       opacity: 0;
       transition: all 0.3s;
@@ -378,8 +455,8 @@
     }
 
     .cart-counter .count {
-      background: #ff6600;
-      color: white;
+      background: #ff3333; /* Red background */
+      color: #ffffff; /* White text */
       width: 25px;
       height: 25px;
       border-radius: 50%;
@@ -389,26 +466,70 @@
       font-weight: bold;
     }
 
-    /* Plane Animation - Bigger and more visible */
-    .plane-animation {
+    /* Gift Box Animation */
+    .gift-box {
       position: fixed;
-      width: 60px; /* Increased size */
-      height: 60px; /* Increased size */
+      width: 40px;
+      height: 40px;
       pointer-events: none;
       z-index: 999;
       opacity: 0;
       transition: opacity 0.3s;
-      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.8)); /* Added glow effect */
+      background-color: #ff3333; /* Red box */
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.8); /* Red glow */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      transform-origin: center;
     }
 
-    .plane-animation.visible {
+    .gift-box::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.5);
+      top: 15px;
+      left: 0;
+      border-radius: 2px;
+    }
+
+    .gift-box::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      left: 15px;
+      top: 0;
+      border-radius: 2px;
+    }
+
+    .gift-box.visible {
       opacity: 1;
     }
 
-    .plane-animation svg {
-      width: 100%;
-      height: 100%;
-      fill: url(#planeGradient);
+    .ribbon {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      background-color: #ffffff; /* White ribbon */
+      top: -10px;
+      left: 15px;
+      border-radius: 3px 3px 0 0;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
     }
 
     @media (max-width: 768px) {
@@ -422,6 +543,7 @@
         background: rgba(0, 0, 0, 0.9);
         padding: 20px;
         gap: 15px;
+        border-top: 1px solid #ff3333; /* Red border */
       }
 
       .nav-links.show {
@@ -453,26 +575,31 @@
         font-size: 14px;
       }
       
-      .plane-animation {
-        width: 40px;
-        height: 40px;
+      .gift-box {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+      
+      .gift-box::before {
+        top: 10px;
+      }
+      
+      .gift-box::after {
+        left: 10px;
+      }
+      
+      .ribbon {
+        left: 10px;
+        height: 15px;
       }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <canvas id="backgroundCanvas"></canvas>
-  
-  <!-- SVG Gradient for Plane -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <linearGradient id="planeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:#ffffff; stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#ffb74d; stop-opacity:1" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <!-- Background elements -->
+  <div class="smoke-container" id="smokeContainer"></div>
   
   <!-- Sliding Navigation Bar -->
   <nav class="sliding-nav" id="slidingNav">
@@ -504,7 +631,7 @@
         <i class="fas fa-bell"></i>
       </div>
       <button class="auth-btn login-btn" id="loginBtn">
-        <i class="fab fa-google"></i> Sign in with Google
+        Sign in with Google
       </button>
       <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='../profile.html'">
         <i class="fas fa-user"></i> Profile
@@ -583,11 +710,10 @@
     <span class="count" id="cartCount">0</span>
   </div>
 
-  <!-- Plane Animation - Bigger and more visible -->
-  <div class="plane-animation" id="planeAnimation">
-    <svg viewBox="0 0 24 24">
-      <path d="M22,16.21V18L14,12L22,6V7.79C22,8.33 21.75,8.84 21.32,9.14L15.5,12L21.32,14.86C21.75,15.16 22,15.67 22,16.21Z" />
-    </svg>
+  <!-- Gift Box Animation -->
+  <div class="gift-box" id="giftBox">
+    <i class="fas fa-gift"></i>
+    <div class="ribbon"></div>
   </div>
 
   <!-- Firebase SDK -->
@@ -646,7 +772,88 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/MotionPathPlugin.min.js"></script>
   <script>
+    // Create red smoke particles
+    function createSmoke() {
+      const smokeContainer = document.getElementById('smokeContainer');
+      
+      for (let i = 0; i < 8; i++) {
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        
+        // Random position
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        smoke.style.left = `${posX}px`;
+        smoke.style.top = `${posY}px`;
+        
+        // Slow animation
+        const duration = 20 + Math.random() * 20;
+        const delay = Math.random() * 20;
+        const size = 4 + Math.random() * 6;
+        
+        smoke.style.width = `${size}px`;
+        smoke.style.height = `${size}px`;
+        smoke.style.animationDuration = `${duration}s`;
+        smoke.style.animationDelay = `${delay}s`;
+        
+        // Red shades
+        const redShade = 200 + Math.floor(Math.random() * 55);
+        const opacity = 0.15 + Math.random() * 0.15;
+        smoke.style.background = `rgba(${redShade}, 100, 100, ${opacity})`;
+        
+        smokeContainer.appendChild(smoke);
+      }
+    }
+
+    // Create red fireflies
+    function createFireflies() {
+      const colors = [
+        '#ff3333', // Bright red
+        '#ff5555', // Lighter red
+        '#ff0000'  // Pure red
+      ];
+      
+      for (let i = 0; i < 15; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        
+        // Position away from edges
+        firefly.style.left = `${15 + Math.random() * 70}%`;
+        firefly.style.top = `${15 + Math.random() * 70}%`;
+        
+        // Gentle animation
+        const duration = 18 + Math.random() * 12;
+        const delay = Math.random() * 15;
+        const size = 1.5 + Math.random() * 2;
+        
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(firefly);
+      }
+    }
+
+    // Initialize animations when page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        createFireflies();
+        createSmoke();
+      }, 1000);
+      
+      // Slow smoke generation
+      setInterval(() => {
+        const smokes = document.querySelectorAll('.smoke');
+        if (smokes.length < 15) {
+          createSmoke();
+        }
+      }, 10000);
+    });
+
     // Sliding Navigation Logic
     const slidingNav = document.getElementById('slidingNav');
     const navToggle = document.getElementById('navToggle');
@@ -664,57 +871,12 @@
       navLinks.classList.toggle('show');
     });
 
-    // Live Background using Canvas
-    const canvas = document.getElementById('backgroundCanvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, particles = [];
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, w, h);
-      particles.forEach((p, i) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
-        ctx.fill();
-        p.y -= p.speed;
-        if (p.y < 0) p.y = h + Math.random() * 100;
-      });
-      requestAnimationFrame(draw);
-    }
-
-    function initParticles(count) {
-      particles = [];
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          size: Math.random() * 2 + 1,
-          alpha: Math.random(),
-          speed: Math.random() * 0.5 + 0.2
-        });
-      }
-    }
-
-    window.addEventListener('resize', () => {
-      resize();
-      initParticles(150);
-    });
-
-    resize();
-    initParticles(150);
-    draw();
-
     // Package Selection Logic
     const packageCards = document.querySelectorAll('.package-card');
     const floatingCartBtn = document.getElementById('floatingCartBtn');
     const cartCounter = document.getElementById('cartCounter');
     const cartCount = document.getElementById('cartCount');
-    const planeAnimation = document.getElementById('planeAnimation');
+    const giftBox = document.getElementById('giftBox');
     let selectedPackage = null;
     let cartItems = 0;
 
@@ -731,14 +893,14 @@
           name: card.querySelector('.gold-amount').textContent
         };
         
-        // Make the floating cart button blink orange
+        // Make the floating cart button blink
         floatingCartBtn.classList.add('orange-blink');
         setTimeout(() => {
           floatingCartBtn.classList.remove('orange-blink');
         }, 1500);
         
-        // Animate plane to cart
-        animatePlaneToCart();
+        // Animate gift box to cart
+        animateGiftToCart(card);
         
         // Increment cart counter
         cartItems++;
@@ -791,9 +953,8 @@
       }
     });
 
-    function animatePlaneToCart() {
+    function animateGiftToCart(selectedCard) {
       // Get position of selected package
-      const selectedCard = document.querySelector('.package-card.selected');
       const cardRect = selectedCard.getBoundingClientRect();
       const startX = cardRect.left + cardRect.width/2;
       const startY = cardRect.top + cardRect.height/2;
@@ -803,39 +964,74 @@
       const endX = cartRect.left + cartRect.width/2;
       const endY = cartRect.top + cartRect.height/2;
       
-      // Set plane starting position
-      planeAnimation.style.left = `${startX}px`;
-      planeAnimation.style.top = `${startY}px`;
-      planeAnimation.classList.add('visible');
+      // Set gift box starting position
+      giftBox.style.left = `${startX}px`;
+      giftBox.style.top = `${startY}px`;
+      giftBox.classList.add('visible');
       
-      // Animate plane to cart
-      const duration = 1; // seconds
-      const planeSize = 60;
+      // Create the animation path
+      const midX = (startX + endX) / 2;
+      const midY = startY - 100; // Higher point for the arc
       
-      gsap.to(planeAnimation, {
-        left: endX,
-        top: endY,
-        duration: duration,
+      // Animate gift box along the path
+      gsap.to(giftBox, {
+        motionPath: {
+          path: [
+            { x: startX, y: startY },
+            { x: midX, y: midY },
+            { x: endX, y: endY }
+          ],
+          curviness: 1.5
+        },
+        duration: 1,
         ease: "power1.out",
+        rotation: 720, // Spin twice
+        scale: 1.2, // Grow slightly
         onComplete: () => {
-          planeAnimation.classList.remove('visible');
+          // Add small bounce effect at the end
+          gsap.to(giftBox, {
+            y: "-=10",
+            duration: 0.1,
+            yoyo: true,
+            repeat: 1,
+            onComplete: () => {
+              giftBox.classList.remove('visible');
+              
+              // Create confetti effect
+              createConfetti(endX, endY);
+            }
+          });
         }
       });
+    }
+
+    function createConfetti(x, y) {
+      const colors = ['#ff3333', '#ffffff', '#ffcc00']; // Red, white, gold
       
-      // Add rotation effect
-      gsap.to(planeAnimation, {
-        rotation: 360,
-        duration: duration
-      });
-      
-      // Add scaling effect
-      gsap.to(planeAnimation, {
-        width: planeSize * 1.5,
-        height: planeSize * 1.5,
-        duration: duration/2,
-        yoyo: true,
-        repeat: 1
-      });
+      for (let i = 0; i < 15; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${x}px`;
+        confetti.style.top = `${y}px`;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        document.body.appendChild(confetti);
+        
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 5 + Math.random() * 5;
+        const xVel = Math.cos(angle) * velocity;
+        const yVel = Math.sin(angle) * velocity;
+        
+        gsap.to(confetti, {
+          x: `+=${xVel * 20}`,
+          y: `+=${yVel * 20}`,
+          opacity: 0,
+          duration: 1,
+          ease: "power1.out",
+          onComplete: () => {
+            confetti.remove();
+          }
+        });
+      }
     }
   </script>
 </body>
