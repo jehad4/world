@@ -1,0 +1,855 @@
+-<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call of Duty - CP Top Up</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=dVbpNG2XTqNa8Jn00qjThzucgB13lWqwz6gGr6T4QFGdGdaGP_KxIj_hj66XyGUYADcuYXfiFun6LN9cnCsQHN8gtPr3Pr3Guf5-Desswf90ulCDV9cAerYkIWScak7PfK2SOF-ZLKau-Gpj2FBvuMPNFthiqAIiJRjdXzQnorp3_42efsb11lNHJiwZYTlE15kDJHuiq4LZQIxMXCx2SuJPyJkwvomb1r3OnxgmLKKl5DVfWOHpKbGuaAOEpSoUEkwW8V-PH3eFq4S_buSQxw" charset="UTF-8"></script><style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #ffffff;
+      background-color: #000000;
+    }
+
+    /* Red Firefly Animation */
+    .firefly {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      box-shadow: 0 0 10px 2px #ff0000;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      animation: firefly-twinkle 6s infinite ease-in-out;
+    }
+
+    @keyframes firefly-twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      20%, 80% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px 3px #ff0000;
+      }
+    }
+
+    /* Content Box Styling */
+    .content-box {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      border: 1px solid #ff3333;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Sliding Navigation Bar */
+    .sliding-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-bottom: 1px solid #ff3333;
+    }
+
+    .sliding-nav.show {
+      transform: translateY(0);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ff3333;
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .banner {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      padding: 20px;
+      color: #ffffff;
+      margin-top: 60px;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #ff3333;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      flex-wrap: wrap;
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 10px;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      border: 1px solid #ff3333;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification-icon {
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      color: #ffffff;
+    }
+
+    .notification-icon::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: #ff3333;
+      border-radius: 50%;
+      position: absolute;
+      top: -2px;
+      right: -2px;
+    }
+
+    .auth-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-btn {
+      background-color: rgba(255, 51, 51, 0.2);
+      color: #ffffff;
+      border: 1px solid #ff3333;
+    }
+
+    .login-btn:hover {
+      background-color: rgba(255, 51, 51, 0.3);
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+    }
+
+    .profile-btn {
+      background-color: #ff3333;
+      color: #ffffff;
+      border: 1px solid #ff3333;
+    }
+
+    .profile-btn:hover {
+      background-color: #ff5555;
+      box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 15px;
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      border: 1px solid #ff3333;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 28px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      color: #ffffff;
+    }
+
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff3333, #ffffff);
+      border-radius: 3px;
+    }
+
+    /* Packages Grid */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .package-card {
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #ff3333;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .package-card:hover {
+      transform: translateY(-5px);
+      border: 1px solid #ff5555;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .package-card .cp-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff9a00;
+      margin-bottom: 10px;
+    }
+
+    .package-card .bonus {
+      font-size: 16px;
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+
+    .package-card .price {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .package-card.selected {
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+
+    /* Limited Time Badge */
+    .limited-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff3333;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Floating Add to Cart Button */
+    .floating-cart-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 0;
+      padding: 12px 24px;
+      min-width: 180px;
+      text-align: center;
+      line-height: 24px;
+      font-weight: 600;
+      font-size: 16px;
+      background: #ff3333;
+      outline: none;
+      color: white;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .floating-cart-btn.blink {
+      animation: blink 0.5s 3;
+    }
+
+    .floating-cart-btn.orange-blink {
+      animation: orangeBlink 0.5s 3, shake 0.5s;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes orangeBlink {
+      0%, 100% { background-color: #ff3333; }
+      50% { background-color: #ff5e00; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    /* Cart Counter */
+    .cart-counter {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .cart-counter.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .cart-counter .count {
+      background: #ff3333;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Gun Animation */
+    .gun-animation {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s;
+      filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.8));
+    }
+
+    .gun-animation.visible {
+      opacity: 1;
+    }
+
+    .gun-animation svg {
+      width: 100%;
+      height: 100%;
+      fill: url(#gunGradient);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 20px;
+        gap: 15px;
+        border-top: 1px solid #ff3333;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .banner {
+        margin-top: 80px;
+        font-size: 22px;
+        padding: 10px;
+      }
+      
+      .section-header {
+        font-size: 24px;
+      }
+
+      .package-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-cart-btn {
+        min-width: 150px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      
+      .gun-animation {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Red Fireflies will be added by JavaScript -->
+  
+  <!-- SVG Gradient for Gun -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="gunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#ffffff; stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#ff3333; stop-opacity:1" />
+      </linearGradient>
+    </defs>
+  </svg>
+  
+  <!-- Sliding Navigation Bar -->
+  <nav class="sliding-nav" id="slidingNav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-gamepad"></i>
+        <span>Call of Duty</span>
+      </div>
+      <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-trophy"></i> Events</a>
+        <a href="#"><i class="fas fa-store"></i> Shop</a>
+        <a href="#"><i class="fas fa-gift"></i> Rewards</a>
+        <a href="support.html"><i class="fas fa-headset"></i> Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div class="banner content-box">Call of Duty CP & Passes (ID Pass Required)</div>
+
+    <div class="header content-box">
+      <div class="logo">
+        <i class="fas fa-gamepad"></i>
+        Call of Duty
+      </div>
+      <div class="auth-buttons">
+        <div class="notification-icon" title="Notifications">
+          <i class="fas fa-bell"></i>
+        </div>
+        <button class="auth-btn login-btn" id="loginBtn" onclick="googleLogin()">
+          <i class="fab fa-google"></i> Sign in with Google
+        </button>
+        <button class="auth-btn profile-btn" id="profileBtn" onclick="window.location.href='profile.html'">
+          <i class="fas fa-user"></i> Profile
+        </button>
+      </div>
+    </div>
+
+    <div class="container content-box">
+      <h2 class="section-header"><i class="fas fa-coins"></i> CP Packages</h2>
+      <div class="package-grid">
+        <div class="package-card" data-amount="240" data-price="330" data-name="240 CP">
+          <div class="cp-amount">240 CP</div>
+          <div class="price">330 Taka</div>
+        </div>
+        <div class="package-card" data-amount="420" data-price="530" data-name="420 CP">
+          <div class="cp-amount">420 CP</div>
+          <div class="price">530 Taka</div>
+        </div>
+        <div class="package-card" data-amount="880" data-price="1040" data-name="880 CP">
+          <div class="cp-amount">880 CP</div>
+          <div class="price">1040 Taka</div>
+        </div>
+        <div class="package-card" data-amount="2400" data-price="2600" data-name="2400 CP">
+          <div class="limited-badge">Popular</div>
+          <div class="cp-amount">2400 CP</div>
+          <div class="price">2600 Taka</div>
+        </div>
+        <div class="package-card" data-amount="5000" data-price="5100" data-name="5000 CP">
+          <div class="cp-amount">5000 CP</div>
+          <div class="price">5100 Taka</div>
+        </div>
+        <div class="package-card" data-amount="10200" data-price="10100" data-name="10200 CP">
+          <div class="limited-badge">Best Value</div>
+          <div class="cp-amount">10200 CP</div>
+          <div class="price">10100 Taka</div>
+        </div>
+      </div>
+
+      <h2 class="section-header"><i class="fas fa-ticket-alt"></i> Premium Passes</h2>
+      <div class="package-grid">
+        <div class="package-card" data-amount="weekly-pass" data-price="130" data-name="Weekly Pass">
+          <div class="cp-amount">Weekly Pass</div>
+          <div class="price">130 Taka</div>
+        </div>
+        <div class="package-card" data-amount="monthly-pass" data-price="450" data-name="Monthly Pass">
+          <div class="limited-badge">Popular</div>
+          <div class="cp-amount">Monthly Pass</div>
+          <div class="price">450 Taka</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-logo content-box">
+      <img src="logo.png" alt="Logo">
+    </div>
+  </div>
+
+  <!-- Floating Add to Cart Button -->
+  <button class="floating-cart-btn" id="floatingCartBtn">
+    <i class="fas fa-shopping-cart"></i> Add to Cart
+  </button>
+
+  <!-- Cart Counter -->
+  <div class="cart-counter" id="cartCounter">
+    <span>Items in cart:</span>
+    <span class="count" id="cartCount">0</span>
+  </div>
+
+  <!-- Gun Animation -->
+  <div class="gun-animation" id="gunAnimation">
+    <svg viewBox="0 0 24 24">
+      <path d="M6,3H7V5H6V10H5V19H6V21H8V19H16V21H18V19H19V10H18V5H17V3H18V1H6V3M16,10V5H15V3H16V1H8V3H9V5H8V10H16M15,12V14H14V17H15V19H9V17H10V14H9V12H15Z"/>
+    </svg>
+  </div>
+
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB40xC2Q3ANNkZy2pbFT0d6LAZTn9YYINE",
+      authDomain: "gixgame.firebaseapp.com",
+      databaseURL: "https://gixgame-default-rtdb.firebaseio.com",
+      projectId: "gixgame",
+      storageBucket: "gixgame.firebasestorage.app",
+      messagingSenderId: "808321553860",
+      appId: "1:808321553860:web:d95a7bcab2b3af49308091"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const database = getDatabase(app);
+
+    // Handle auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("profileBtn").style.display = "flex";
+      } else {
+        document.getElementById("loginBtn").style.display = "flex";
+        document.getElementById("profileBtn").style.display = "none";
+      }
+    });
+
+    window.googleLogin = function () {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          console.log("User signed in:", result.user);
+        })
+        .catch(error => {
+          console.error("Login error:", error);
+          alert("Login failed: " + error.message);
+        });
+    };
+
+    // Create red fireflies (লাল আগুনের ফুলকি)
+    function createFireflies() {
+      const colors = [
+        '#ff3333', // Bright red
+        '#ff5555', // Lighter red
+        '#ff0000'  // Pure red
+      ];
+      
+      for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        
+        // Random position
+        firefly.style.left = `${Math.random() * 100}%`;
+        firefly.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation properties
+        const duration = 4 + Math.random() * 4;
+        const delay = Math.random() * 8;
+        const size = 3 + Math.random() * 3;
+        
+        firefly.style.width = `${size}px`;
+        firefly.style.height = `${size}px`;
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+        firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(firefly);
+      }
+    }
+
+    // Initialize animations when page loads
+    window.addEventListener('load', () => {
+      createFireflies();
+    });
+  </script>
+
+  <script>
+    // Sliding Navigation Logic
+    const slidingNav = document.getElementById('slidingNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // Show nav after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        slidingNav.classList.add('show');
+      }, 500);
+    });
+
+    // Toggle mobile menu
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    // Package Selection Logic
+    const packageCards = document.querySelectorAll('.package-card');
+    const floatingCartBtn = document.getElementById('floatingCartBtn');
+    const cartCounter = document.getElementById('cartCounter');
+    const cartCount = document.getElementById('cartCount');
+    const gunAnimation = document.getElementById('gunAnimation');
+    let selectedPackage = null;
+    let cartItems = 0;
+
+    packageCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selected class from all cards
+        packageCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        card.classList.add('selected');
+        selectedPackage = {
+          amount: card.dataset.amount,
+          price: card.dataset.price,
+          name: card.dataset.name
+        };
+        
+        // Make the floating cart button blink orange
+        floatingCartBtn.classList.add('orange-blink');
+        setTimeout(() => {
+          floatingCartBtn.classList.remove('orange-blink');
+        }, 1500);
+        
+        // Animate gun to cart
+        animateGunToCart();
+        
+        // Increment cart counter
+        cartItems++;
+        cartCount.textContent = cartItems;
+        
+        // Show cart counter
+        cartCounter.classList.add('show');
+        setTimeout(() => {
+          cartCounter.classList.remove('show');
+        }, 2000);
+      });
+    });
+
+    // Floating Add to Cart Button
+    floatingCartBtn.addEventListener('click', async () => {
+      if(!selectedPackage) {
+        alert('Please select a package first!');
+        return;
+      }
+
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Please sign in to add items to your cart!');
+        return;
+      }
+
+      try {
+        // Add item to cart in Firebase
+        const cartRef = ref(database, `users/${user.uid}/cart`);
+        const newItemRef = push(cartRef);
+        
+        await set(newItemRef, {
+          game: 'Call of Duty',
+          package: selectedPackage.name,
+          amount: selectedPackage.amount,
+          price: selectedPackage.price,
+          timestamp: Date.now()
+        });
+
+        // Show success animation
+        floatingCartBtn.classList.add('blink');
+        setTimeout(() => {
+          floatingCartBtn.classList.remove('blink');
+        }, 1500);
+
+        alert(`${selectedPackage.name} added to cart!`);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert("Failed to add to cart. Please try again.");
+      }
+    });
+
+    function animateGunToCart() {
+      // Get position of selected package
+      const selectedCard = document.querySelector('.package-card.selected');
+      const cardRect = selectedCard.getBoundingClientRect();
+      const startX = cardRect.left + cardRect.width/2;
+      const startY = cardRect.top + cardRect.height/2;
+      
+      // Get position of cart counter
+      const cartRect = cartCounter.getBoundingClientRect();
+      const endX = cartRect.left + cartRect.width/2;
+      const endY = cartRect.top + cartRect.height/2;
+      
+      // Set gun starting position
+      gunAnimation.style.left = `${startX}px`;
+      gunAnimation.style.top = `${startY}px`;
+      gunAnimation.classList.add('visible');
+      
+      // Animate gun to cart
+      const duration = 1; // seconds
+      const gunSize = 60;
+      
+      gunAnimation.animate([
+        { left: `${startX}px`, top: `${startY}px`, opacity: 1 },
+        { left: `${endX}px`, top: `${endY}px`, opacity: 0 }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+      
+      // Add rotation effect
+      gunAnimation.animate([
+        { transform: 'rotate(0deg)' },
+        { transform: 'rotate(360deg)' }
+      ], {
+        duration: duration * 1000,
+        easing: "linear"
+      });
+      
+      // Add scaling effect
+      gunAnimation.animate([
+        { width: `${gunSize}px`, height: `${gunSize}px` },
+        { width: `${gunSize * 1.5}px`, height: `${gunSize * 1.5}px` },
+        { width: `${gunSize}px`, height: `${gunSize}px` },
+        { width: `${gunSize * 1.5}px`, height: `${gunSize * 1.5}px` },
+        { width: `${gunSize}px`, height: `${gunSize}px` }
+      ], {
+        duration: duration * 1000,
+        easing: "ease-in-out"
+      });
+      
+      // Hide after animation
+      setTimeout(() => {
+        gunAnimation.classList.remove('visible');
+      }, duration * 1000);
+    }
+  </script>
+</body>
+</html>
